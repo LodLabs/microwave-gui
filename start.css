@@ -1,0 +1,117 @@
+body {
+	background-color: black;
+}
+
+/* Screen is 480x800 pixels */
+#microwave_container {
+	display: table;
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	width: 480px;
+	height: 800px;
+	margin: auto;
+	background-color: #EEE;
+	font-size: 18px;
+}
+
+#time_column {
+	display: table-cell;
+	width: 80px;
+	height: 100%;
+}
+
+#center_column {
+	display: table-cell;
+}
+
+#temp_column {
+	display: table-cell;
+	width: 50px;
+	height: 100%;
+}
+
+#time_heading, #temp_heading {
+	height: 20px;
+	font-weight: bold;
+	text-align: center;
+}
+
+#time_bg {
+	position: absolute;
+
+}
+
+#thermal_image img {
+	/* weird behaviour, top divs in adjacent columns align with the image height */
+	/* vertical-align: top makes it no longer apparent */
+	vertical-align: top;
+	width: 100%;
+	border: 3px solid;
+}
+
+#details {
+	display: table;
+	width: 100%;
+}
+
+#details span {
+	display: table-cell;
+	text-align: center;
+}
+
+#time_data, #temp_data {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	height: 780px;
+}
+
+#temp_data {
+	background-image: linear-gradient(
+		orange, red 20%, blue
+	);
+	color: black;
+}
+
+#extras {
+	display: table;
+	width: 330px;
+	position: absolute;
+	bottom: 0px;
+	margin-bottom: 20px;
+}
+
+#extras div {
+	display: table-cell;
+	text-align: center;
+}
+
+#extras .glyphicon {
+	font-size: 60px;
+}
+
+#temp_data > span {
+	text-align: right;
+}
+
+#thermal_image {
+	text-align: center;
+	margin: 10px;
+}
+
+#qcook1, #qcook2 {
+	border: thin solid;
+	margin: 50px 10px;
+	padding: 20px 0;
+	text-align: center;
+	height: 100px;
+	line-height: 60px; /* height-padding = 100-20-20 */
+	font-size: 24px;
+	background-color: #CCC;
+	border-radius: 10px;
+}
+
+
