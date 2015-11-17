@@ -114,4 +114,10 @@ body {
 	border-radius: 10px;
 }
 
+#qcook1, #qcook2, #extras div {
+	cursor: pointer;
+}
 
+#time_data, #temp_data {
+	cursor: crosshair;
+}
