@@ -20,31 +20,21 @@
 		<div id="microwave_container">
 			<div id="time_column">
 				<div id="time_heading">Time</div>
-				<div id="time_data">
-					<canvas id="time_bg" width="80px" height="780px"></canvas>
-					<div style="display: none">
-						<span>10 min</span>
-						<span>5 min</span>
-						<span>1 min</span>
-						<span>30 s</span>
-						<span>10 s</span>
-					</div>
-				</div>
+				<canvas id="time_data" width="80px" height="780px"></canvas>
 			</div>
 			<div id="center_column">
 				<div id="thermal_image">
 					<img src="thermal.png">
 				</div>
-				<!-- TODO Weight -->
 				<div id="details">
 					<span id="detail_heading">Currently:</span>
 					<span id="temp">12&deg;</span>
 					<span id="weight">300g</span>
 				</div>
-				<div id="qcook1">
+				<div class="qcook">
 					Boil liquid - 100&deg;
 				</div>
-				<div id="qcook2">
+				<div class="qcook">
 					Heat liquid - 80&deg;
 				</div>
 				<div id="extras">
@@ -64,227 +54,12 @@
 			</div>
 			<div id="temp_column">
 				<div id="temp_heading">Temp</div>
-				<div id="temp_data">
-					<canvas id="temp_bg" style="postion: absolute" width="80px" height="780px"></canvas>
-					<span>150&deg;</span>
-					<span>100&deg;</span>
-					<span>80&deg;</span>
-					<span>50&deg;</span>
-					<span>30&deg;</span>
-				</div>
+				<canvas id="temp_data" width="80px" height="780px"></canvas>
 			</div>
 		</div>
-	<script>
-		canvas = document.getElementById("time_bg");
-		ctx = canvas.getContext("2d");
 
-		// Create fill pattern
-		var pattern = document.createElement("canvas");
-		pattern.width = 5;
-		pattern.height = 10;
-		ctx_pat = pattern.getContext("2d");
-		
-		// Draw diagonal lines
-		ctx_pat.beginPath();
-		ctx_pat.moveTo(0,0);
-		ctx_pat.lineTo(pattern.width,pattern.height);
-		ctx_pat.lineWidth = 1;
-		ctx_pat.strokeStyle = "#AAF";
-		ctx_pat.stroke();
-
-		// Need to fill in corners so stripes don't look disconnected
-		ctx_pat.strokeRect(0,pattern.height-0.1,0.1,pattern.height);
-		ctx_pat.strokeRect(pattern.width-0.1,0,pattern.width,0.1);
-
-
-		// Fill under the curve
-		ctx.beginPath();
-		ctx.moveTo(0,2);
-		ctx.quadraticCurveTo(canvas.width*0.8, canvas.height*0.03, canvas.width, canvas.height);
-		ctx.lineTo(canvas.width, 2);
-		ctx.lineTo(0,2);
-		ctx.closePath();
-
-		ctx.fillStyle = ctx.createPattern(pattern, "repeat");
-		ctx.fill();
-
-		// Light line to close it off
-		ctx.lineWidth = 1;
-		ctx.strokeStyle = "#AAF";
-		ctx.stroke();
-
-		ctx.beginPath();
-		ctx.moveTo(0,2);
-		ctx.quadraticCurveTo(canvas.width*0.8, canvas.height*0.03, canvas.width, canvas.height);
-
-		// Draw the curve
-		ctx.lineWidth = 2;
-		ctx.strokeStyle = "#88F";
-		ctx.stroke();
-
-		// Handle clickage
-		canvas.addEventListener('click', function(event) {
-			if (event.button) return; // Not left-button, ignore
-
-			var y = event.pageY - canvas.offsetTop; // Get local coordinates
-			var h = canvas.offsetHeight;
-
-			// Log scale, 1sec - 1hr
-			var range = Math.log(3600);
-			
-			// Reverse y direction, make bottom zero
-			// TODO: Protect against zero value?
-			var log_val = (1-y/h)*range;
-
-			var norm_val = Math.exp(log_val);
-
-			var v = y_2_val(y);
-			console.log(y,h,v,v/60);
-
-			//console.log(y,h,range,log_val,norm_val,norm_val/60);
-		});
-
-			/* ln(1) = 0
-			ln(60) = 4
-			ln(3600) = 8.188689
-			*/
-
-		function ln_val_2_coords (v) {
-			var h = canvas.offsetHeight;
-
-			// Log scale, 1sec - 1hr
-			var range = Math.log(3600);
-
-			var log_val = Math.log(v);
-			return (1-log_val/range)*h;
-		}
-
-		var max_val = 1200; // 20 min
-		function linear_top_half(v,elbow) {
-			// Linear feels better to click, but the range looks weird
-			return v-elbow;
-		}
-
-		function sqrt_top_half(v,elbow) {
-			// Square-root shape
-			return Math.pow(v-elbow,1/1.5);
-		}
-
-		function log_top_half(v,elbow) {
-			return Math.log((v-elbow)/50+1);
-		}
-		var top_half = log_top_half;
-
-		function v2m(v) {
-			//return Math.log(Math.log(v));
-			//return Math.pow(v,1/1.4);
-			//return Math.log(v);
-			//return Math.pow(v,1/1.4);
-			//return Math.pow(v-60,3)*0.0001;
-
-			var elbow = 60;
-			// var ev = v2m(elbow);
-			// return v > elbow ? v2m(elbow)+Math.pow(v-elbow,1/1.5) : Math.pow(v,1/0.8);
-			
-			// Fix elbow in middle of range
-			return v > elbow ? v2m(elbow) + top_half(v,elbow) : top_half(max_val,elbow)/elbow*v;
-		}
-
-		function m2v(m) {
-			var elbow_v = 60;
-			var elbow = v2m(elbow_v);
-			// return m > elbow ? elbow_v + Math.pow(m-elbow,1.5) : m/elbow*elbow_v;
-			return m > elbow ? elbow_v + (Math.exp(m-elbow)-1)*50 : m/elbow*elbow_v;
-		}
-
-		function val_2_y (v) {
-			var h = canvas.offsetHeight;
-
-			// Scale, 1sec - 1hr
-			var range = v2m(max_val);
-
-			var log_val = v2m(v);
-			return (1-log_val/range)*h;
-		}
-
-		function y_2_val (y) {
-			var h = canvas.offsetHeight;
-			var range = v2m(max_val);
-
-			var m = (1-y/h)*range;
-			var raw_val = m2v(m);
-
-			// To make people happy, we want to bias towards pretty numbers
-			// There is no practical difference between 60 and 63 seconds...
-			// But if somebody pushes the 1 min button they expect 60 seconds
-
-			console.log("Rounding", raw_val, raw_val%300, raw_val%60,raw_val%10);
-			if (raw_val > 200 && (raw_val + 100) % 300 < 200) { 
-				return Math.round(raw_val/300)*300; // Nearest 5 minutes
-			} else if (raw_val > 50 && (raw_val + 10) % 60 < 20) {
-				return Math.round(raw_val/60)*60; // Nearest minute
-			} else if (raw_val > 5 && (raw_val + 5) % 10 < 10) {
-				return Math.round(raw_val/10)*10; // Nearest 10 seconds
-			} else {
-				return Math.round(raw_val);
-			}
-		}
-
-		function time_label (v, label) {
-			var y = val_2_y(v);
-
-		 /*
-			ctx.beginPath();
-			ctx.moveTo(0,y);
-			ctx.lineTo(canvas.offsetWidth,y);
-			ctx.strokeStyle = "#F00";
-		 	ctx.stroke();
-		 */
-
-			ctx.font = "20px sans-serif";
-			ctx.fillStyle = "black";
-			ctx.textAlign = "right";
-			ctx.fillText(label, canvas.offsetWidth-5, y+10); // +10 vertically centers text
-		}
-
-		time_label(10, "10 sec");
-		time_label(30, "30 sec");
-		time_label(60, "1 min");
-		time_label(5*60, "5 min");
-		time_label(10*60, "10 min");
-
-		function t2y (v) {
-			return Math.pow(v-30,1/1.8); // square-rootish
-			return v-30; // linear
-		}
-
-		function temp_label (v) {
-			temp_canvas = document.getElementById("temp_bg");
-			temp_ctx = temp_canvas.getContext("2d");
-			var h = temp_canvas.offsetHeight;
-			
-			// Range from 150 to 30 degrees
-			// Offset height to keep text within range
-			h = h - 24;
-			// var y = 12 + h - h/(150-30)*(v-30); // linear
-			var y = 12 + h - h/t2y(150)*t2y(v);
-
-			temp_ctx.font = "20px sans-serif";
-			temp_ctx.fillStyle = "black";
-			temp_ctx.textAlign = "right";
-			temp_ctx.fillText(v+"°", canvas.offsetWidth-5, y+10); // +10 vertically centers text
-		}
-
-		temp_label(150);
-		temp_label(100);
-		temp_label(80);
-		temp_label(50);
-		temp_label(30);
-
-
-
-
-	</script>
+		<script src="time_selection_bar.js"></script>
+		<script src="temperature_selection_bar.js"></script>
 	</body>
 </html>
 

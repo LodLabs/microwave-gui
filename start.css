@@ -37,11 +37,14 @@ body {
 	height: 20px;
 	font-weight: bold;
 	text-align: center;
+	margin: 7px 0;
 }
 
-#time_bg {
-	position: absolute;
-
+#temp_data {
+	border-top: thin solid #333;
+	border-left: thin solid #333;
+}
+#temp_column {
 }
 
 #thermal_image img {
@@ -102,7 +105,7 @@ body {
 	margin: 10px;
 }
 
-#qcook1, #qcook2 {
+.qcook {
 	border: thin solid;
 	margin: 50px 10px;
 	padding: 20px 0;
@@ -114,7 +117,7 @@ body {
 	border-radius: 10px;
 }
 
-#qcook1, #qcook2, #extras div {
+.qcook, #extras div {
 	cursor: pointer;
 }
 
