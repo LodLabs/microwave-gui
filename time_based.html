@@ -78,36 +78,69 @@
 			$("#time_dial").trigger('change');
 		</script>
 		<script>
-			var canvas = document.getElementById("power_triangle");
-			var ctx = canvas.getContext("2d");
+			function draw_power_bg() {
+				var canvas = document.getElementById("power_triangle");
+				var ctx = canvas.getContext("2d");
 
-			ctx.lineWidth = 5; // Size of current power marker
+				ctx.lineWidth = 5; // Size of current power marker
 
-			// Draw a triangle depicting increasing power
-			ctx.beginPath();
-			ctx.moveTo(0, canvas.height-ctx.lineWidth);
-			ctx.lineTo(canvas.width, canvas.height-ctx.lineWidth);
-			ctx.lineTo(canvas.width, ctx.lineWidth);
-			ctx.closePath();
+				// Draw a triangle depicting increasing power
+				ctx.beginPath();
+				ctx.moveTo(0, canvas.height-ctx.lineWidth);
+				ctx.lineTo(canvas.width, canvas.height-ctx.lineWidth);
+				ctx.lineTo(canvas.width, ctx.lineWidth);
+				ctx.closePath();
 
-			var gradient = ctx.createLinearGradient(0,-canvas.width*0.2, canvas.width,0);
-			gradient.addColorStop(0,"blue");
-			gradient.addColorStop(1,"red");
+				var gradient = ctx.createLinearGradient(0,-canvas.width*0.2, canvas.width,0);
+				gradient.addColorStop(0,"blue");
+				gradient.addColorStop(1,"red");
 
-			ctx.fillStyle = gradient;
-			ctx.fill();
+				ctx.fillStyle = gradient;
+				ctx.fill();
+			}
 
 			// Draw a marker depicting current power
-			ctx.beginPath();
-			ctx.moveTo(canvas.width*0.8-ctx.lineWidth*1.5, ctx.lineWidth/2);
-			ctx.lineTo(canvas.width*0.8+ctx.lineWidth*1.5, ctx.lineWidth/2);
-			ctx.moveTo(canvas.width*0.8-ctx.lineWidth*1.5, canvas.height-ctx.lineWidth/2);
-			ctx.lineTo(canvas.width*0.8+ctx.lineWidth*1.5, canvas.height-ctx.lineWidth/2);
-			ctx.moveTo(canvas.width*0.8, 0);
-			ctx.lineTo(canvas.width*0.8, canvas.height);
+			function draw_power_marker(percentage) {
+				var canvas = document.getElementById("power_triangle");
+				var ctx = canvas.getContext("2d");
 
-			ctx.strokeStyle = "black";
-			ctx.stroke();
+				var portion = percentage/100;
+
+				ctx.beginPath();
+				ctx.moveTo(canvas.width*portion-ctx.lineWidth*1.5, ctx.lineWidth/2);
+				ctx.lineTo(canvas.width*portion+ctx.lineWidth*1.5, ctx.lineWidth/2);
+				ctx.moveTo(canvas.width*portion-ctx.lineWidth*1.5, canvas.height-ctx.lineWidth/2);
+				ctx.lineTo(canvas.width*portion+ctx.lineWidth*1.5, canvas.height-ctx.lineWidth/2);
+				ctx.moveTo(canvas.width*portion, 0);
+				ctx.lineTo(canvas.width*portion, canvas.height);
+
+				ctx.lineWidth = 5; // Size of current power marker
+				ctx.strokeStyle = "black";
+				ctx.stroke();
+			}
+
+			// Make the marker move
+			document.getElementById("power_triangle").addEventListener('click', function(event) {
+				if (event.button) return; // Not left-button, ignore
+
+				var canvas = document.getElementById("power_triangle");
+
+				// TODO: De-jquery, finding relative position without it is a PIA though
+				var x = event.pageX - $(canvas).offset().left;
+				var pcnt = x/canvas.width*100;
+
+				console.log(event, event.pageX, x, pcnt)
+
+				// Redraw with new marker
+				canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
+				draw_power_bg();
+				draw_power_marker(pcnt);
+
+			});
+
+			draw_power_bg();
+			draw_power_marker(80);
+
 		</script>
 	</body>
 </html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Slider demo</title>
+		<style>
+			#container {
+				background: #AAA;
+				width: 800px;
+				height: 100px;
+				border: 2px solid #505050;
+				margin-left: 50px;
+			}
+			#dragme {
+				background: red;
+				width: 100px;
+				height: 98px;
+				border: 1px solid #600;
+				cursor: move;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="container">
+			<div id="dragme" draggable="true"></div>
+		</div>
+		<script>
+			// Based on http://stackoverflow.com/a/8933562/2438650
+			document.getElementById("dragme").onmousedown = function(e) {
+				var moved = 0;
+				var start = e.pageX;
+
+				var elem = document.getElementById("dragme");
+				elem.style.position = 'relative';
+				elem.style.left = "0px";
+
+				var min = -parseFloat(elem.style.marginLeft) || 0;
+				var c_width = document.getElementById("container").clientWidth;
+				var max = min + c_width - elem.offsetWidth;
+				
+				document.onmousemove = function(e) {
+					// Constrain the moved value to be within the container bounds
+					var mouse_moved = e.pageX - start;
+
+					if (mouse_moved < min) {
+						moved = min;
+					} else if (mouse_moved > max) {
+						moved = max;
+					} else {
+						moved = mouse_moved;
+					}
+
+					elem.style.left = moved+"px";
+				};
+
+				document.onmouseup = function() {
+					// Element movement has been temporary so far, lock it in...
+					elem.style.position = 'static';
+					elem.style.marginLeft = (parseFloat(elem.style.marginLeft)||0) + moved + "px";
+					document.onmousemove = document.onmouseup = null;
+				};
+			}
+		</script>
+	</body>
+</html>
