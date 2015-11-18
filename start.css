@@ -29,7 +29,7 @@ body {
 
 #temp_column {
 	display: table-cell;
-	width: 50px;
+	width: 80px;
 	height: 100%;
 }
 
@@ -70,6 +70,10 @@ body {
 	flex-direction: column;
 	justify-content: space-between;
 	height: 780px;
+}
+
+#time_details > div {
+	border: thin solid;
 }
 
 #temp_data {
@@ -123,4 +127,21 @@ body {
 
 #time_data, #temp_data {
 	cursor: crosshair;
+}
+
+#stop {
+	width: 100%;
+	border: 3px solid #800;
+	border-radius: 10px;
+	color: #800;
+	background-color: #E00;
+}
+
+#stop > span {
+	/* Outline the stop character to highlight it.
+	 * We do this by putting a shadow on it, no offset and a small radius.
+	 * One shadow isn't visible enough, counter this by doing a few of them.
+	 * The black tints it black, doesn't apply a hard black colour.
+	 */
+	text-shadow: 0 0 3px #000, 0 0 3px #000, 0 0 3px #000
 }

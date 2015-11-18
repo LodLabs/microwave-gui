@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset='utf-8'>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta http-equiv="Content-Language" content="en">
+		<meta name="viewport" content="width=480">
+
+		<title>Microwave time page</title>
+
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
+		<script src="https://code.jquery.com/jquery-2.1.4.min.js" integrity="sha384-R4/ztc4ZlRqWjqIuvf6RX5yb/v90qNGx6fS48N0tRxiGkqveZETq72KgDVJCp2TC" crossorigin="anonymous"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" integrity="sha512-K1qjQ+NcF2TYO/eI3M6v8EiNYZfA95pQumfvcVrTHtwQVDG+aHRqLi/ETn2uB+1JqwYqVG3LIvdm9lj6imS/pQ==" crossorigin="anonymous"></script>
+
+		<link href="start.css" rel="stylesheet" type="text/css">
+
+		<script src="jQuery-Knob/js/jquery.knob.js"></script>
+	</head>
+	<body>
+		<!-- Microwave screen is 480x800 pixels -->
+		
+		<div id="microwave_container">
+			<div id="time_column" class="clearfix"></div>
+			<div id="center_column">
+				<div id="thermal_image">
+					<img src="thermal.png">
+				</div>
+				<div id="time_details" style="margin: 30px 0; height: 350px; width: 100%; display: table">
+				<!-- <div id="time_details" style="display: flex; flex-direction: column"> -->
+					<div style="display: table-row; text-align: center">
+						<input id="time_dial" value="75" data-fgColor="#42A" data-bgColor="#BAC" readonly>
+					</div>
+					<div style="display: table-row; margin: 0 auto; text-align: center">
+						<canvas id="power_triangle" class="clearfix" width="250px" height="70px"></canvas>
+						<span style="display: block">Power 80% (900W)</span>
+					</div>
+				</div>
+
+				<div id="extras">
+					<button id="stop" type="button" class="btn btn-default" aria-label="Stop">
+						<span class="glyphicon glyphicon-stop" aria-hidden="true"></span>
+					</button>
+				</div>
+			</div>
+			<div id="temp_column" class="clearfix"></div>
+		</div>
+		<script>
+			var total_time = 180;
+			var timer = 180; // counts down
+			console.log($("#time_dial").val());
+			$("#time_dial").knob({
+				'draw': function() {
+					// this.cv sets position of wheel, relative to min and max values
+					// this.i is input, used to set value of inside the wheel
+					this.cv = total_time - timer;
+
+					var mins = Math.floor(timer/60);
+					var secs = timer%60;
+					$(this.i).val("-"+mins+":"+((secs+'').length == 1 ? '0'+secs : secs));
+				}
+			}).trigger('configure', {
+				"min":0,
+				"max":total_time,
+			});
+
+			// Count down the time
+			var timer_interval = setInterval(update_timer, 1000); // 1000ms
+			function update_timer() {
+				if (timer > 0) {
+					timer = timer - 1;
+					$("#time_dial").trigger('change');
+				} else {
+					clearInterval(timer_interval);
+					alert("Ding!");
+				}
+			}
+			// Manually trigger the draw on load, otherwise value could be left over from page reload
+			$("#time_dial").trigger('change');
+		</script>
+		<script>
+			var canvas = document.getElementById("power_triangle");
+			var ctx = canvas.getContext("2d");
+
+			ctx.lineWidth = 5; // Size of current power marker
+
+			// Draw a triangle depicting increasing power
+			ctx.beginPath();
+			ctx.moveTo(0, canvas.height-ctx.lineWidth);
+			ctx.lineTo(canvas.width, canvas.height-ctx.lineWidth);
+			ctx.lineTo(canvas.width, ctx.lineWidth);
+			ctx.closePath();
+
+			var gradient = ctx.createLinearGradient(0,-canvas.width*0.2, canvas.width,0);
+			gradient.addColorStop(0,"blue");
+			gradient.addColorStop(1,"red");
+
+			ctx.fillStyle = gradient;
+			ctx.fill();
+
+			// Draw a marker depicting current power
+			ctx.beginPath();
+			ctx.moveTo(canvas.width*0.8-ctx.lineWidth*1.5, ctx.lineWidth/2);
+			ctx.lineTo(canvas.width*0.8+ctx.lineWidth*1.5, ctx.lineWidth/2);
+			ctx.moveTo(canvas.width*0.8-ctx.lineWidth*1.5, canvas.height-ctx.lineWidth/2);
+			ctx.lineTo(canvas.width*0.8+ctx.lineWidth*1.5, canvas.height-ctx.lineWidth/2);
+			ctx.moveTo(canvas.width*0.8, 0);
+			ctx.lineTo(canvas.width*0.8, canvas.height);
+
+			ctx.strokeStyle = "black";
+			ctx.stroke();
+		</script>
+	</body>
+</html>
