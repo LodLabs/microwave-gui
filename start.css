@@ -145,3 +145,13 @@ body {
 	 */
 	text-shadow: 0 0 3px #000, 0 0 3px #000, 0 0 3px #000
 }
+
+#power_triangle, #power_marker {
+	position: relative;
+	/*border: thin solid;*/
+}
+
+#power_marker {
+	/* background: rgba(0,200,0,50); */
+	top: 5px;
+}
