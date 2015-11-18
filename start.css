@@ -146,6 +146,10 @@ body {
 	text-shadow: 0 0 3px #000, 0 0 3px #000, 0 0 3px #000
 }
 
+#time_dial {
+	cursor: pointer;
+}
+
 #power_triangle, #power_marker {
 	position: relative;
 	/*border: thin solid;*/
@@ -154,4 +158,9 @@ body {
 #power_marker {
 	/* background: rgba(0,200,0,50); */
 	top: 5px;
+	cursor: move;
+}
+
+#power_triangle {
+	cursor: pointer;
 }

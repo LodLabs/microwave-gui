@@ -28,7 +28,7 @@
 				<div id="time_details" style="margin: 30px 0; height: 350px; width: 100%; display: table">
 				<!-- <div id="time_details" style="display: flex; flex-direction: column"> -->
 					<div style="display: table-row; text-align: center">
-						<input id="time_dial" value="75" data-fgColor="#42A" data-bgColor="#BAC" readonly>
+						<span id="time_dial" value="75" data-fgColor="#42A" data-bgColor="#BAC"></span>
 					</div>
 					<div style="display: table-row; margin: 0 auto; text-align: center">
 						<canvas id="power_triangle" width="250px" height="60px"></canvas>
@@ -50,6 +50,22 @@
 			var timer = 180; // counts down
 			console.log($("#time_dial").val());
 			$("#time_dial").knob({
+					change : function (value) {
+                        console.log("change : " + value);
+						timer = total_time - Math.round(value);
+                    },
+				/*
+                    release : function (value) {
+                        console.log("release : " + value);
+                    },
+                    cancel : function () {
+                        console.log("cancel : ", this);
+                    },
+                    format : function (value) {
+                        console.log("format : " + value);
+                    },
+					*/
+
 				'draw': function() {
 					// this.cv sets position of wheel, relative to min and max values
 					// this.i is input, used to set value of inside the wheel
@@ -57,7 +73,7 @@
 
 					var mins = Math.floor(timer/60);
 					var secs = timer%60;
-					$(this.i).val("-"+mins+":"+((secs+'').length == 1 ? '0'+secs : secs));
+					$(this.i).html("-"+mins+":"+((secs+'').length == 1 ? '0'+secs : secs));
 				}
 			}).trigger('configure', {
 				"min":0,
@@ -77,6 +93,15 @@
 			}
 			// Manually trigger the draw on load, otherwise value could be left over from page reload
 			$("#time_dial").trigger('change');
+
+			function increment_time(knob, seconds) {
+				total_time = total_time + seconds;
+				timer = timer + seconds;
+				$(knob).trigger('configure', { "max":total_time } );
+			}
+			// $("#time_dial").knob().on("click", function() { increment_time(this, 30) });
+			$("#time_dial").on("click", function() { increment_time(this, 30) });
+
 		</script>
 		<script>
 			function draw_power_bg(canvas) {
@@ -180,7 +205,7 @@
 				document.getElementById("power_watts").innerHTML = Math.round(microwave_wattage*percentage/100);
 			}
 
-			set_power_marker(80);
+			set_power_marker(100);
 
 			document.getElementById("power_marker").onmousedown = function(event) {
 				if (event.button) return; // Not left-button, ignore
@@ -188,7 +213,7 @@
 				var start = event.pageX;
 
 				var mrk = document.getElementById("power_marker");
-				var abs_left = $("#power_triangle").offset().left;
+				var abs_left = $("#power_triangle").offset().left+4; // TODO: 4px offset? why...
 				var width = document.getElementById("power_triangle").offsetWidth;
 
 				var left = parseFloat(mrk.style.left) || 0;
