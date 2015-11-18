@@ -38,16 +38,30 @@
 				</div>
 
 				<div id="extras">
-					<button id="stop" type="button" class="btn btn-default" aria-label="Stop">
+					<a href="start.html" id="stop" type="button" class="btn btn-default" aria-label="Stop">
 						<span class="glyphicon glyphicon-stop" aria-hidden="true"></span>
-					</button>
+					</a>
 				</div>
 			</div>
 			<div id="temp_column" class="clearfix"></div>
 		</div>
 		<script>
-			var total_time = 180;
-			var timer = 180; // counts down
+			// From http://stackoverflow.com/a/2880929/2438650
+			var urlParams;
+			(window.onpopstate = function () {
+				var match,
+					pl     = /\+/g,  // Regex for replacing addition symbol with a space
+					search = /([^&=]+)=?([^&]*)/g,
+					decode = function (s) { return decodeURIComponent(s.replace(pl, " ")); },
+					query  = window.location.search.substring(1);
+
+				urlParams = {};
+				while (match = search.exec(query))
+				urlParams[decode(match[1])] = decode(match[2]);
+			})();
+
+			var total_time = urlParams.time || 180;
+			var timer = total_time; // counts down
 			console.log($("#time_dial").val());
 			$("#time_dial").knob({
 					change : function (value) {

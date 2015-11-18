@@ -141,5 +141,7 @@ canvas.addEventListener('click', function(event) {
 	var y = event.pageY - canvas.offsetTop; // Get local coordinates
 	var v = y2val(y);
 	console.log("Click", y,v,v/60);
+
+	window.location.href = 'time_based.html?time='+v;
 });
 
