@@ -14,7 +14,7 @@ body {
 	height: 800px;
 	margin: auto;
 	background-color: #EEE;
-	font-size: 18px;
+	font-size: 24px;
 }
 
 #time_column {
@@ -85,15 +85,20 @@ body {
 
 #extras {
 	display: table;
-	width: 330px;
+	border-spacing: 5px;
+	width: 318px;
 	position: absolute;
 	bottom: 0px;
 	margin-bottom: 20px;
 }
 
-#extras div {
+#extras > div {
 	display: table-cell;
 	text-align: center;
+	border: thin solid;
+	background-color: #CCC;
+	border-radius: 10px;
+	padding-top: 8px;
 }
 
 #extras .glyphicon {
@@ -116,7 +121,6 @@ body {
 	text-align: center;
 	height: 100px;
 	line-height: 60px; /* height-padding = 100-20-20 */
-	font-size: 24px;
 	background-color: #CCC;
 	border-radius: 10px;
 }
