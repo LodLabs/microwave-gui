@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset='utf-8'>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta http-equiv="Content-Language" content="en">
+		<meta name="viewport" content="width=480">
+
+		<title>Microwave Start page</title>
+
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
+		<script src="https://code.jquery.com/jquery-2.1.4.min.js" integrity="sha384-R4/ztc4ZlRqWjqIuvf6RX5yb/v90qNGx6fS48N0tRxiGkqveZETq72KgDVJCp2TC" crossorigin="anonymous"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" integrity="sha512-K1qjQ+NcF2TYO/eI3M6v8EiNYZfA95pQumfvcVrTHtwQVDG+aHRqLi/ETn2uB+1JqwYqVG3LIvdm9lj6imS/pQ==" crossorigin="anonymous"></script>
+
+		<script src="sly/sly-1.6.1.js"></script>
+
+		<link href="start.css" rel="stylesheet" type="text/css">
+
+	</head>
+	<body>
+		<!-- Microwave screen is 480x800 pixels -->
+		<div id="microwave_container">
+			<div id="left_nav_column" class="clearfix">
+				<ul class="nav nav-pills nav-stacked" role="tablist">
+					<li role="presentation" class="active"><a href="#recommended" aria-controls="recommended" role="tab" data-toggle="tab"><span class="glyphicon glyphicon-check" aria-hidden="true"></span><span class="sr-only">Recommended</span></a></li>
+					<li role="presentation"><a href="#favourites" aria-controls="favourites" role="tab" data-toggle="tab"><span class="glyphicon glyphicon-star" aria-hidden="true"></span><span class="sr-only">Favourites</span></a></li>
+					<li role="presentation"><a href="#alphabetical" aria-controls="alphabetical" role="tab" data-toggle="tab">A-Z</a></li>
+					<li class="spacer" aria-hidden="true"></li>
+					<li role="presentation"><a href="#new" aria-controls="new" role="tab" data-toggle="tab"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span><span class="sr-only">New</span></a></li>
+					<li role="presentation"><a href="#download" aria-controls="download" role="tab" data-toggle="tab"><span class="glyphicon glyphicon-download" aria-hidden="true"></span><span class="sr-only">Download</span></a></li>
+					<li class="spacer" aria-hidden="true"></li>
+					<li role="presentation"><a href="start.html"><span class="glyphicon glyphicon-home" aria-hidden="true"></span><span class="sr-only">Home</span></a></li>
+				</ul>
+			</div>
+			<div id="center_column">
+				<h1>Quick cook</h1>
+				<div id="qcook_tabcontainer" class="tab-content">
+					<div role="tabpanel" class="tab-pane active" id="recommended">
+						<h2>Recomended</h2>
+						<ul>
+							<li><span class="title">Boil liquid - 100&deg;</span><span class="score">51</span></li>
+							<li><span class="title">Heat liquid - 80&deg;</span><span class="score">51</span></li>
+							<li><span class="title">Defrost</span><span class="score">42</span></li>
+							<li><span class="title">Feed me a stray cat</span><span class="score">23</span></li>
+							<li><span class="title">Popcorn</span><span class="score">12</span></li>
+						</ul>
+					</div>
+					<div role="tabpanel" class="tab-pane" id="favourites">
+						<h2>Favourites</h2>
+						<ul>
+							<li><span class="title">Feed me a stray cat</span><span class="score">23</span></li>
+						</ul>
+					</div>
+					<div role="tabpanel" class="tab-pane" id="alphabetical">
+						<h2>Alphabetical</h2>
+						<div id="scroll_bg">
+							ABCDEFGHIJKLMNOPQRSTUVWXYZ
+						</div>
+						<div class="scrollbar">
+							<div class="handle">
+								<div class="mousearea"></div>
+							</div>
+						</div>
+						<div id="alphabetical_list" class="frame">
+						<ul class="slidee">
+							<li><span class="title">Boil liquid - 100&deg;</span><span class="score">51</span></li>
+							<li><span class="title">Defrost</span><span class="score">42</span></li>
+							<li><span class="title">Feed me a stray cat</span><span class="score">23</span></li>
+							<li><span class="title">Heat liquid - 80&deg;</span><span class="score">51</span></li>
+							<li><span class="title">Popcorn</span><span class="score">12</span></li>
+							<li><span class="title">Moose</span><span class="score">12</span></li>
+							<li><span class="title">Moose jerky</span><span class="score">12</span></li>
+							<li><span class="title">Moose souflet</span><span class="score">12</span></li>
+							<li><span class="title">Moose soup</span><span class="score">12</span></li>
+							<li><span class="title">Moose tail</span><span class="score">12</span></li>
+							<li><span class="title">Yak</span><span class="score">12</span></li>
+							<li><span class="title">Zebra</span><span class="score">12</span></li>
+						</ul>
+						</div>
+					</div>
+					<div role="tabpanel" class="tab-pane" id="new">
+						<h2>New</h2>
+					</div>
+					<div role="tabpanel" class="tab-pane" id="download">
+						<h2>Download</h2>
+					</div>
+				</div>
+			</div>
+			<div id="right_nav_column" class="clearfix"></div>
+			<div id="footer" style="display: none">
+				<div id="extras">
+					<a href="qcook.html" id="menu_qCooks" class="">
+						<span class="glyphicon glyphicon-home" aria-hidden="true"></span>
+						<span class="">Home</span>
+					</a>
+					<a href="start.html" id="menu_settings" class="">
+						<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+						<span class="">New</span>
+					</a>
+					<a href="start.html" id="menu_recipies" class="">
+						<span class="glyphicon glyphicon-download" aria-hidden="true"></span>
+						<span style="font-size: 20px" class="">Download</span>
+					</a>
+				</div>
+			</div>
+		</div>
+
+		<script>
+			$('.nav-tabs a').click(function(e) {
+				e.preventDefault();
+				$(this).tab('show');
+			});
+		</script>
+		<script>
+			var options = {
+				/* itemNav: 'basic', */
+				smart: 0,
+				activateOn: 'click',
+				mouseDragging: 1, // Click-dragging on frame
+				touchDragging: 1, // Touch-dragging on frame
+				releaseSwing: 1,
+				scrollBar: $('.scrollbar'),
+				scrollBy: 1,
+				dragHandle: 1, // Click-dragging on scrollbar handle
+				dynamicHandle: 0,
+			};
+			var frame = new Sly('#alphabetical_list', options).init();
+
+			$('a[href="#alphabetical"]').on('shown.bs.tab', function(e) {
+				frame.reload();
+			});
+		</script>
+	</body>
+</html>
+
+

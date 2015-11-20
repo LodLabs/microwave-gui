@@ -17,6 +17,91 @@ body {
 	font-size: 24px;
 }
 
+#left_nav_column {
+	display: table-cell;
+	width: 80px;
+	height: 100%;
+	padding-right: 5px; /* Cell - can't use margin */
+}
+
+#left_nav_column {
+	text-align: center;
+}
+
+#left_nav_column .nav {
+	margin-top: 60px;
+}
+
+#left_nav_column .nav-pills > li > a {
+	border: 2px solid #337ab7;
+	border-radius: 10px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	margin: 5px;
+}
+
+.nav-stacked > li.spacer {
+	height: 50px;
+}
+
+#alphabetical_list {
+	height: 678px;
+	margin-right: 30px;
+	padding-right: 2px; /* Leave space for border */
+}
+
+#qcook_tabcontainer #alphabetical_list ul > li {
+	width: 100%;
+}
+
+#scroll_bg {
+    height: 678px;
+    position: absolute;
+    right: 22px;
+    width: 1px;
+	line-height: 1.08em;
+	text-align: center;
+	word-wrap: break-word;
+	font-family: monospace;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+/* #337ab7 = 51,122,183 */
+
+.scrollbar {
+    /* background: #ccc none repeat scroll 0 0; */
+	background: rgba(0,0,0,0.2);
+    height: 678px;
+    line-height: 0;
+    position: absolute;
+    right: 0;
+    width: 1.2em;
+	z-index: 20;
+}
+.scrollbar .handle {
+    background-color: rgba(51,122,183,0.6);
+	border: thin solid rgb(51,122,183);
+    cursor: pointer;
+	margin: 0 auto;
+    height: 1.2em;
+    width: 1.2em;
+	border-radius: 1.2em;
+}
+.scrollbar .handle .mousearea {
+    height: 100%;
+    left: -10px;
+    position: absolute;
+    top: 0;
+    width: 22px;
+}
+
+
+#left_nav_column .nav-pills > li > a span.glyphicon {
+	top: 4px; /* glyphicons appear too high, vertically */
+}
+
 #time_column {
 	display: table-cell;
 	width: 80px;
@@ -55,6 +140,40 @@ body {
 	border: 3px solid;
 }
 
+#qcook_tabcontainer > div ul {
+	display: flex;
+	flex-direction: column;
+	/* height: 678px; TODO: Need to set this for other lists, disable for A-Z */
+	padding: 0;
+}
+
+#qcook_tabcontainer > div ul > li {
+    border: thin solid;
+    display: table;
+    padding: 10px;
+    width: 95%;
+	border-radius: 10px;
+	margin: 10px 0;
+	cursor: pointer;
+	background-color: white;
+}
+
+#qcook_tabcontainer > div li > .score {
+    display: table-cell;
+    text-align: right;
+    width: 60px;
+}
+
+#qcook_tabcontainer > div li > .title {
+    display: table-cell;
+}
+
+#center_column h1, #center_column h2 {
+	/* Center text, relative to whole page */
+	margin-left: -80px;
+	text-align: center;
+}
+
 #details {
 	display: table;
 	width: 100%;
@@ -85,6 +204,7 @@ body {
 
 #extras {
 	display: table;
+	table-layout: fixed;
 	border-spacing: 5px;
 	width: 318px;
 	position: absolute;
@@ -92,13 +212,14 @@ body {
 	margin-bottom: 20px;
 }
 
-#extras > div {
+#extras > a {
 	display: table-cell;
 	text-align: center;
 	border: thin solid;
 	background-color: #CCC;
 	border-radius: 10px;
 	padding-top: 8px;
+	color: inherit;
 }
 
 #extras .glyphicon {
@@ -133,7 +254,7 @@ body {
 	cursor: crosshair;
 }
 
-#stop {
+a#stop { /* Work around specificity issue, trump #extras > a */
 	width: 100%;
 	border: 3px solid #800;
 	border-radius: 10px;
