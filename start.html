@@ -24,7 +24,16 @@
 			</div>
 			<div id="center_column">
 				<div id="thermal_image">
-					<img src="thermal.png">
+					<!-- <img src="thermal.png"> -->
+					<iframe src="grideye/snapshot.html" style="overflow: hidden" seamless="seamless" scrolling="no" style="width: 100%"></iframe>
+					<script>
+						// There are silly CSS games that can be played
+						// This is cleaner and sets sizing properly for inside the iframe
+						$(function() {
+							var iframe = $('#thermal_image iframe');
+							iframe.css({'height':iframe.width()+'px'});
+						});
+					</script>
 				</div>
 				<div id="details">
 					<span id="detail_heading">Currently:</span>

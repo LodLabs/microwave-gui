@@ -18,9 +18,7 @@ body {
 }
 
 #left_nav_column {
-	display: table-cell;
 	width: 80px;
-	height: 100%;
 	padding-right: 5px; /* Cell - can't use margin */
 }
 
@@ -63,7 +61,12 @@ body {
 	text-align: center;
 	word-wrap: break-word;
 	font-family: monospace;
+}
+
+.noselect {
+	-webkit-touch-callout: none;
 	-webkit-user-select: none;
+	-khtml-user-select: none;
 	-moz-user-select: none;
 	-ms-user-select: none;
 	user-select: none;
@@ -102,20 +105,27 @@ body {
 	top: 4px; /* glyphicons appear too high, vertically */
 }
 
-#time_column {
+#microwave_container > div {
 	display: table-cell;
-	width: 80px;
 	height: 100%;
+	vertical-align: top;
+}
+
+iframe {
+	margin: 0;
+	padding: 0;
+	border: none;
+}
+
+#time_column {
+	width: 80px;
 }
 
 #center_column {
-	display: table-cell;
 }
 
 #temp_column {
-	display: table-cell;
 	width: 80px;
-	height: 100%;
 }
 
 #time_heading, #temp_heading {
@@ -132,10 +142,7 @@ body {
 #temp_column {
 }
 
-#thermal_image img {
-	/* weird behaviour, top divs in adjacent columns align with the image height */
-	/* vertical-align: top makes it no longer apparent */
-	vertical-align: top;
+#thermal_image img, #thermal_image iframe {
 	width: 100%;
 	border: 3px solid;
 }
