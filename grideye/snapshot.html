@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <meta charset="utf-8"/>
+  <!-- TODO: Github is not a CDN -->
+  <script src="https://raw.githubusercontent.com/anomal/RainbowVis-JS/master/rainbowvis.js"></script>
+  <script type="application/javascript">
+    function load() {
+      var xobj = new XMLHttpRequest();
+      xobj.overrideMimeType("application/json");
+      xobj.open('GET', 'snapshot.json', true);
+      xobj.onreadystatechange = function() {
+         if (xobj.readyState == XMLHttpRequest.DONE && xobj.status == "200") {
+           var response = JSON.parse(xobj.responseText);
+           console.log(response);
+           process_image(response);
+         }
+      }
+      xobj.send(null);
+
+    }
+
+    var resp_grid;
+    function process_image(grid) {
+      resp_grid = grid;
+
+      draw();
+    }
+
+	// Initialise the palette
+	function iron_palette(point, min, max) {
+		// Based on values from http://stackoverflow.com/a/30066513/2438650
+		var iron_rainbow = new Rainbow();
+		iron_rainbow.setSpectrum("white", "gold", "#cc0077", "#20008c", "black");
+		iron_rainbow.setNumberRange(parseFloat(min), parseFloat(max));
+		return '#'+iron_rainbow.colourAt(point);
+	}
+
+	function gray_palette(point, min, max) {
+		var v = Math.floor((point - min) * 255/(max-min));
+		return 'rgb('+v+','+v+','+v+')';
+	}
+	var palette = iron_palette;
+
+    function draw() {
+      var canvas = document.getElementById("canvas");
+      if (canvas.getContext) {
+        var ctx = canvas.getContext("2d");
+
+		// Viewport based sizing doesn't seem to work inside an iframe
+		canvas.width = window.innerWidth;
+		canvas.height = window.innerHeight;
+
+		var bw = canvas.width/8;
+		var bh = canvas.height/8;
+
+		console.log("Size", canvas.width, canvas.height, bw, bh);
+		console.log("Size2", window.innerHeight, window.innerWidth);
+
+        // Data is an 8x8 grid - show it
+        // TODO: Is not actually an even grid
+        // TODO: Not all pixels are the same area
+
+        // Dodgy grayscale pallette stretched across the full range
+        var min = Math.pow(2,12); // 11 bit number
+        var max = -Math.pow(2,12); // 11 bit number
+        for (var i=0; i<8; i++) {
+          for (var j=0; j<8; j++) {
+            var v = resp_grid[i][j];
+            if (v > max)
+              max = v;
+            if (v < min)
+              min = v;
+          }
+        }
+
+		console.log("Max", max, "Min", min);
+
+        for (var i=0; i<8; i++) {
+          for (var j=0; j<8; j++) {
+            ctx.fillStyle = palette(resp_grid[i][j], min, max);
+            ctx.fillRect(j*bw,i*bh,bw,bh);
+		  	// console.log(i,j,resp_grid[i][j],ctx.fillStyle);
+          }
+        }
+
+      }
+    }
+
+	function resizeCanvas() {
+		console.log("ReSize", canvas.width, canvas.height);
+		console.log("ReSize2", window.innerHeight, window.innerWidth);
+		draw();
+	}
+
+	window.addEventListener('resize', resizeCanvas, false);
+  </script>
+  <style>
+   * { margin: 0; padding: 0 }
+   canvas { display: block; width: 100vw; height=100vh }
+  </style>
+ </head>
+ <body onload="load();">
+   <canvas id="canvas"></canvas>
+ </body>
+</html>
