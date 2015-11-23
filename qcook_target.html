@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="mw-app">
+	<head>
+		<meta charset='utf-8'>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta http-equiv="Content-Language" content="en">
+		<meta name="viewport" content="width=480">
+
+		<title>Microwave time page</title>
+
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
+		<script src="https://code.jquery.com/jquery-2.1.4.min.js" integrity="sha384-R4/ztc4ZlRqWjqIuvf6RX5yb/v90qNGx6fS48N0tRxiGkqveZETq72KgDVJCp2TC" crossorigin="anonymous"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" integrity="sha512-K1qjQ+NcF2TYO/eI3M6v8EiNYZfA95pQumfvcVrTHtwQVDG+aHRqLi/ETn2uB+1JqwYqVG3LIvdm9lj6imS/pQ==" crossorigin="anonymous"></script>
+
+		<link href="start.css" rel="stylesheet" type="text/css">
+
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
+	</head>
+	<body>
+		<div id="microwave_container">
+			<div class="left_col"></div>
+			<div id="center_column" ng-controller="qcook">
+				<div id="thermal_image">
+					<iframe src="grideye/snapshot.html" style="overflow: hidden" seamless="seamless" scrolling="no" style="width: 100%"></iframe>
+					<script>
+						// There are silly CSS games that can be played
+						// This is cleaner and sets sizing properly for inside the iframe
+						$(function() {
+							var iframe = $('#thermal_image iframe');
+							iframe.css({'height':iframe.width()+'px'});
+						});
+					</script>
+				</div>
+				<h1>Quick cook</h1>
+				<h2>{{details.title}}</h2>
+				<p>{{details.description}}</p>
+				<ol>
+					<li ng-repeat="step in details.steps">{{step}}</li>
+				</ol>
+
+				<div id="extras">
+					<a href="start.html" id="stop" type="button" class="btn btn-default" aria-label="Stop">
+						<span class="glyphicon glyphicon-stop" aria-hidden="true"></span>
+					</a>
+				</div>
+			</div>
+			<div class="right_col"></div>
+		</div>
+
+		<script>
+			// Based on http://stackoverflow.com/a/2880929/2438650
+			var urlParams = function () {
+				var match,
+					pl     = /\+/g,  // Regex for replacing addition symbol with a space
+					search = /([^&=]+)=?([^&]*)/g,
+					decode = function (s) { return decodeURIComponent(s.replace(pl, " ")); },
+					query  = window.location.search.substring(1);
+
+				var urlParams = {};
+				while (match = search.exec(query))
+				urlParams[decode(match[1])] = decode(match[2]);
+				return urlParams;
+			}();
+
+			var scripts = {
+				"boil" : {
+					"title" : "Boil liquid - 100°",
+					"description" : "Heats the liquid to boiling point and holds it there.",
+					"steps" : [
+						"Heat to 100°",
+						"Sound chime",
+						"Hold temperature between 90° and 100°",
+					]
+				},
+				"heat" : {
+					"title" : "Heat liquid - 80°",
+					"description" : "Heats the liquid and holds it there.",
+					"steps" : [
+						"Heat to 80°",
+						"Sound chime",
+						"Hold temperature between 75° and 80°",
+					]
+				},
+				"default" : {
+					"title" : "One touch cooking",
+					"description" : "One touch quick options for your common cooking needs.",
+					"steps" : [
+						"Push a button",
+						"???",
+						"EAT!",
+					],
+				},
+			
+			};
+
+            var myApp = angular.module('mw-app',[]);
+			myApp.controller('qcook', ['$scope', function($scope) {
+				$scope.details = scripts[urlParams.script] || scripts["default"];
+			}]);
+
+
+		</script>
+	</body>
+</html>

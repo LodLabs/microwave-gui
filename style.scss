@@ -11,10 +11,11 @@ $col_width: 80px;
 	height: $height;
 	margin: 0 auto; // Center container
 
-	> div {
+	& > div {
 		display: table-cell;
 		height: 100%;
 		vertical-align: top;
+		position: relative; // Allows absolute positioning within divs
 	}
 
 	.left_col, .right_col {
@@ -205,6 +206,8 @@ iframe {
 	flex-direction: column;
 	justify-content: space-between;
 	height: 780px;
+	position: absolute;
+	bottom: 0;
 }
 
 #time_details > div {
@@ -227,6 +230,7 @@ iframe {
 	border-spacing: 5px;
 	width: 318px;
 	bottom: 0px;
+	position: absolute;
 	margin-bottom: 20px;
 
 	& > a {
@@ -235,6 +239,23 @@ iframe {
 
 	.glyphicon, .fa {
 		font-size: 60px;
+	}
+
+	#stop {
+		width: 100%;
+		border: 3px solid #800;
+		border-radius: 10px;
+		color: #800;
+		background-color: #E00;
+
+		& > span {
+			/* Outline the stop character to highlight it.
+			* We do this by putting a shadow on it, no offset and a small radius.
+			* One shadow isn't visible enough, counter this by doing a few of them.
+			* The black tints it black, doesn't apply a hard black colour.
+			*/
+			text-shadow: 0 0 3px #000, 0 0 3px #000, 0 0 3px #000
+		}
 	}
 }
 
@@ -263,22 +284,6 @@ iframe {
 	cursor: crosshair;
 }
 
-a#stop { /* Work around specificity issue, trump #extras > a */
-	width: 100%;
-	border: 3px solid #800;
-	border-radius: 10px;
-	color: #800;
-	background-color: #E00;
-
-	& > span {
-		/* Outline the stop character to highlight it.
-		 * We do this by putting a shadow on it, no offset and a small radius.
-		 * One shadow isn't visible enough, counter this by doing a few of them.
-		 * The black tints it black, doesn't apply a hard black colour.
-		 */
-		text-shadow: 0 0 3px #000, 0 0 3px #000, 0 0 3px #000
-	}
-}
 
 #time_dial {
 	cursor: pointer;
