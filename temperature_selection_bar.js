@@ -49,5 +49,5 @@ document.getElementById("temp_data").addEventListener('click', function(event) {
 
 	console.log("TClick", v, event.pageY, h, y, scaled);
 
+	window.location.href = 'temperature_based.html?t='+v;
 });
-
