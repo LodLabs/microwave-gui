@@ -5,6 +5,14 @@ $height: 800px;
 $col_width: 80px;
 
 // Broad Layout
+#microwave_screen {
+	// Double-div required to prevent width creep
+	width: $width;
+	max-width: $width;
+	margin: 0 auto; // Center container
+	overflow: hidden;
+}
+
 #microwave_container {
 	display: table;
 	width: $width;
@@ -92,10 +100,14 @@ body {
 			
 			a {
 				display: table;
+				table-layout: fixed;
+				overflow: hidden;
 				width: 100%;
 
 				& > span {
 					display: table-cell;
+					text-overflow: ellipsis;
+					overflow: hidden;
 				}
 			}
 
@@ -136,8 +148,10 @@ body {
 
 	.scrollbar {
 		/* background: #ccc none repeat scroll 0 0; */
-		background: rgba(0,0,0,0.2);
+		// background: rgba(0,0,0,0.2);
 		height: $height - $h1_h2_height;
+		border-left: thin solid;
+		border-top: thin solid;
 		line-height: 0;
 		position: relative;
 		float: right;
@@ -146,8 +160,10 @@ body {
 		z-index: 20;
 
 		.handle {
-			background-color: rgba(51,122,183,0.6);
-			border: thin solid rgb(51,122,183);
+			// background-color: rgba(51,122,183,0.6);
+			// border: thin solid rgb(51,122,183);
+			background-color: rgba(200,200,200,0.6);
+			border: thin solid #AAA;
 			cursor: pointer;
 			margin: 0 auto;
 			height: 1.2em;
