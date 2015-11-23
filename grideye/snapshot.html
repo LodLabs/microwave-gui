@@ -2,8 +2,7 @@
 <html>
  <head>
   <meta charset="utf-8"/>
-  <!-- TODO: Github is not a CDN -->
-  <script src="https://raw.githubusercontent.com/anomal/RainbowVis-JS/master/rainbowvis.js"></script>
+  <script src="rainbowvis.js"></script>
   <script type="application/javascript">
     function load() {
       var xobj = new XMLHttpRequest();
@@ -61,7 +60,6 @@
         // TODO: Is not actually an even grid
         // TODO: Not all pixels are the same area
 
-        // Dodgy grayscale pallette stretched across the full range
         var min = Math.pow(2,12); // 11 bit number
         var max = -Math.pow(2,12); // 11 bit number
         for (var i=0; i<8; i++) {
@@ -90,7 +88,9 @@
 	function resizeCanvas() {
 		console.log("ReSize", canvas.width, canvas.height);
 		console.log("ReSize2", window.innerHeight, window.innerWidth);
-		draw();
+		if (resp_grid) {
+			draw();
+		}
 	}
 
 	window.addEventListener('resize', resizeCanvas, false);

@@ -12,46 +12,53 @@
 		<script src="https://code.jquery.com/jquery-2.1.4.min.js" integrity="sha384-R4/ztc4ZlRqWjqIuvf6RX5yb/v90qNGx6fS48N0tRxiGkqveZETq72KgDVJCp2TC" crossorigin="anonymous"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" integrity="sha512-K1qjQ+NcF2TYO/eI3M6v8EiNYZfA95pQumfvcVrTHtwQVDG+aHRqLi/ETn2uB+1JqwYqVG3LIvdm9lj6imS/pQ==" crossorigin="anonymous"></script>
 
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
+
 		<script src="sly/sly-1.6.1.js"></script>
+
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
 
 		<link href="start.css" rel="stylesheet" type="text/css">
 
 	</head>
-	<body>
+	<body ng-app="qcook-app">
 		<!-- Microwave screen is 480x800 pixels -->
 		<div id="microwave_container">
-			<div id="left_nav_column" class="clearfix">
+			<div id="left_nav_column" class="left_col">
 				<ul class="nav nav-pills nav-stacked" role="tablist">
-					<li role="presentation" class="active"><a href="#recommended" aria-controls="recommended" role="tab" data-toggle="tab"><span class="glyphicon glyphicon-check" aria-hidden="true"></span><span class="sr-only">Recommended</span></a></li>
-					<li role="presentation"><a href="#favourites" aria-controls="favourites" role="tab" data-toggle="tab"><span class="glyphicon glyphicon-star" aria-hidden="true"></span><span class="sr-only">Favourites</span></a></li>
+					<li role="presentation" class="active"><a href="#recommended" aria-controls="recommended" role="tab" data-toggle="tab"><span class="fa fa-check-square-o" aria-hidden="true"></span><span class="sr-only">Recommended</span></a></li>
+					<!-- Could also use fa-thumbs-o-up for recommended -->
+					<li role="presentation"><a href="#favourites" aria-controls="favourites" role="tab" data-toggle="tab"><span class="fa fa-star-o" aria-hidden="true"></span><span class="sr-only">Favourites</span></a></li>
 					<li role="presentation"><a href="#alphabetical" aria-controls="alphabetical" role="tab" data-toggle="tab">A-Z</a></li>
 					<li class="spacer" aria-hidden="true"></li>
-					<li role="presentation"><a href="#new" aria-controls="new" role="tab" data-toggle="tab"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span><span class="sr-only">New</span></a></li>
-					<li role="presentation"><a href="#download" aria-controls="download" role="tab" data-toggle="tab"><span class="glyphicon glyphicon-download" aria-hidden="true"></span><span class="sr-only">Download</span></a></li>
+					<li role="presentation"><a href="#new" aria-controls="new" role="tab" data-toggle="tab"><span class="fa fa-plus" aria-hidden="true"></span><span class="sr-only">New</span></a></li>
+					<li role="presentation"><a href="#download" aria-controls="download" role="tab" data-toggle="tab"><span class="fa fa-download" aria-hidden="true"></span><span class="sr-only">Download</span></a></li>
 					<li class="spacer" aria-hidden="true"></li>
-					<li role="presentation"><a href="start.html"><span class="glyphicon glyphicon-home" aria-hidden="true"></span><span class="sr-only">Home</span></a></li>
+					<li role="presentation"><a href="start.html"><span class="fa fa-home" aria-hidden="true"></span><span class="sr-only">Home</span></a></li>
 				</ul>
 			</div>
 			<div id="center_column">
 				<h1>Quick cook</h1>
 				<div id="qcook_tabcontainer" class="tab-content">
-					<div role="tabpanel" class="tab-pane active" id="recommended">
+					<div role="tabpanel" class="tab-pane active" id="recommended" ng-controller="qcook">
 						<h2>Recomended</h2>
 						<ul>
-							<li><span class="title">Boil liquid - 100&deg;</span><span class="score">51</span></li>
-							<li><span class="title">Heat liquid - 80&deg;</span><span class="score">51</span></li>
-							<li><span class="title">Defrost</span><span class="score">42</span></li>
-							<li><span class="title">Feed me a stray cat</span><span class="score">23</span></li>
-							<li><span class="title">Popcorn</span><span class="score">12</span></li>
+							<li ng-repeat="entry in entries | orderBy:'-score' | limitTo:5">
+								<span class="title">{{entry.title}}</span>
+								<span class="score">{{entry.score}}</span>
+							</li>
 						</ul>
 					</div>
-					<div role="tabpanel" class="tab-pane" id="favourites">
+					<div role="tabpanel" class="tab-pane" id="favourites" ng-controller="qcook">
 						<h2>Favourites</h2>
 						<ul>
-							<li><span class="title">Feed me a stray cat</span><span class="score">23</span></li>
+							<li ng-repeat="entry in entries | filter:{recommended:true}:true">
+								<span class="title">{{entry.title}}</span>
+								<span class="score">{{entry.score}}</span>
+							</li>
 						</ul>
 					</div>
-					<div role="tabpanel" class="tab-pane" id="alphabetical">
+					<div role="tabpanel" class="tab-pane" id="alphabetical" ng-controller="qcook">
 						<h2>Alphabetical</h2>
 						<div id="scroll_bg" class="noselect">
 							ABCDEFGHIJKLMNOPQRSTUVWXYZ
@@ -63,18 +70,10 @@
 						</div>
 						<div id="alphabetical_list" class="frame">
 						<ul class="slidee">
-							<li><span class="title">Boil liquid - 100&deg;</span><span class="score">51</span></li>
-							<li><span class="title">Defrost</span><span class="score">42</span></li>
-							<li><span class="title">Feed me a stray cat</span><span class="score">23</span></li>
-							<li><span class="title">Heat liquid - 80&deg;</span><span class="score">51</span></li>
-							<li><span class="title">Popcorn</span><span class="score">12</span></li>
-							<li><span class="title">Moose</span><span class="score">12</span></li>
-							<li><span class="title">Moose jerky</span><span class="score">12</span></li>
-							<li><span class="title">Moose souflet</span><span class="score">12</span></li>
-							<li><span class="title">Moose soup</span><span class="score">12</span></li>
-							<li><span class="title">Moose tail</span><span class="score">12</span></li>
-							<li><span class="title">Yak</span><span class="score">12</span></li>
-							<li><span class="title">Zebra</span><span class="score">12</span></li>
+							<li ng-repeat="entry in entries | orderBy:'title'">
+								<span class="title">{{entry.title}}</span>
+								<span class="score">{{entry.score}}</span>
+							</li>
 						</ul>
 						</div>
 					</div>
@@ -84,23 +83,6 @@
 					<div role="tabpanel" class="tab-pane" id="download">
 						<h2>Download</h2>
 					</div>
-				</div>
-			</div>
-			<div id="right_nav_column" class="clearfix"></div>
-			<div id="footer" style="display: none">
-				<div id="extras">
-					<a href="qcook.html" id="menu_qCooks" class="">
-						<span class="glyphicon glyphicon-home" aria-hidden="true"></span>
-						<span class="">Home</span>
-					</a>
-					<a href="start.html" id="menu_settings" class="">
-						<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-						<span class="">New</span>
-					</a>
-					<a href="start.html" id="menu_recipies" class="">
-						<span class="glyphicon glyphicon-download" aria-hidden="true"></span>
-						<span style="font-size: 20px" class="">Download</span>
-					</a>
 				</div>
 			</div>
 		</div>
@@ -128,6 +110,79 @@
 
 			$('a[href="#alphabetical"]').on('shown.bs.tab', function(e) {
 				frame.reload();
+			});
+		</script>
+		<script>
+			var myApp = angular.module('qcook-app',[]);
+			myApp.controller('qcook', ['$scope', function($scope) {
+				$scope.entries = [
+					{
+						"title"       : "Feed me a stray cat",
+						"score"       : 23,
+						"recommended" : true,
+					},
+					{
+						"title"        : "Boil liquid - 100°",
+						"score"        : 51,
+						"recommended"  : false,
+					},
+					{
+						"title"        : "Defrost",
+						"score"        : 42,
+						"recommended"  : false,
+					},
+					{
+						"title"        : "Heat liquid - 80°",
+						"score"        : 51,
+						"recommended"  : false,
+					},
+					{
+						"title"        : "Popcorn",
+						"score"        : 12,
+						"recommended"  : false,
+					},
+					{
+						"title"        : "Moose",
+						"score"        : 12,
+						"recommended"  : false,
+					},
+					{
+						"title"        : "Moose jerky",
+						"score"        : 12,
+						"recommended"  : false,
+					},
+					{
+						"title"        : "Moose souflet",
+						"score"        : 12,
+						"recommended"  : false,
+					},
+					{
+						"title"        : "Moose soup",
+						"score"        : 12,
+						"recommended"  : false,
+					},
+					{
+						"title"        : "Moose tail",
+						"score"        : 12,
+						"recommended"  : false,
+					},
+					{
+						"title"        : "Yak",
+						"score"        : 12,
+						"recommended"  : false,
+					},
+					{
+						"title"        : "Zebra",
+						"score"        : 12,
+						"recommended"  : false,
+					}
+
+				];
+				console.log($scope);
+			}]);
+			myApp.controller('recommended', function() {
+			});
+			myApp.controller('alphabetical', function() {
 			});
 		</script>
 	</body>

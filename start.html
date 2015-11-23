@@ -18,7 +18,7 @@
 	<body>
 		<!-- Microwave screen is 480x800 pixels -->
 		<div id="microwave_container">
-			<div id="time_column">
+			<div id="time_column" class="left_col">
 				<div id="time_heading">Time</div>
 				<canvas id="time_data" width="80px" height="780px"></canvas>
 			</div>
@@ -27,7 +27,7 @@
 					<!-- <img src="thermal.png"> -->
 					<iframe src="grideye/snapshot.html" style="overflow: hidden" seamless="seamless" scrolling="no" style="width: 100%"></iframe>
 					<script>
-						// There are silly CSS games that can be played
+						// There are silly CSS games that can be played to set the height
 						// This is cleaner and sets sizing properly for inside the iframe
 						$(function() {
 							var iframe = $('#thermal_image iframe');
@@ -40,28 +40,28 @@
 					<span id="temp">12&deg;</span>
 					<span id="weight">300g</span>
 				</div>
-				<div class="qcook">
+				<a class="btn btn-mw qcook" href="qcook_target.html?script=boil">
 					Boil liquid - 100&deg;
-				</div>
-				<div class="qcook">
-					Heat liquid - 80&deg;
-				</div>
+				</a>
+				<a class="btn btn-mw qcook" href="qcook_target.html?script=heat">
+						Heat liquid - 80&deg;
+				</a>
 				<div id="extras">
-					<a href="start.html" id="menu_settings" class="">
+					<a id="menu_settings" class="btn btn-mw">
 						<span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
 						<span class="sr-only">Settings</span>
 					</a>
-					<a href="start.html" id="menu_recipies" class="">
+					<a id="menu_recipies" class="btn btn-mw">
 						<span class="glyphicon glyphicon-list" aria-hidden="true"></span>
 						<span class="sr-only">Recipies</span>
 					</a>
-					<a href="qcook.html" id="menu_qCooks" class="">
+					<a href="qcook.html" id="menu_qCooks" class="btn btn-mw">
 						<span class="glyphicon glyphicon-cutlery" aria-hidden="true"></span>
 						<span class="sr-only">Quick cooks</span>
 					</a>
 				</div>
 			</div>
-			<div id="temp_column">
+			<div id="temp_column" class="right_col">
 				<div id="temp_heading">Temp</div>
 				<canvas id="temp_data" width="80px" height="780px"></canvas>
 			</div>

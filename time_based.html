@@ -17,13 +17,10 @@
 		<script src="jQuery-Knob/js/jquery.knob.js"></script>
 	</head>
 	<body>
-		<!-- Microwave screen is 480x800 pixels -->
-		
 		<div id="microwave_container">
-			<div id="time_column" class="clearfix"></div>
+			<div class="left_col"></div>
 			<div id="center_column">
 				<div id="thermal_image">
-					<!-- <img src="thermal.png"> -->
 					<iframe src="grideye/snapshot.html" style="overflow: hidden" seamless="seamless" scrolling="no" style="width: 100%"></iframe>
 					<script>
 						// There are silly CSS games that can be played
@@ -52,217 +49,31 @@
 					</a>
 				</div>
 			</div>
-			<div id="temp_column" class="clearfix"></div>
+			<div class="right_col"></div>
 		</div>
+
+		<script src="time_dial.js"></script>
+		<script src="draw_power_triangle.js"></script>
 		<script>
-			// From http://stackoverflow.com/a/2880929/2438650
-			var urlParams;
-			(window.onpopstate = function () {
+			// Based on http://stackoverflow.com/a/2880929/2438650
+			var urlParams = function () {
 				var match,
 					pl     = /\+/g,  // Regex for replacing addition symbol with a space
 					search = /([^&=]+)=?([^&]*)/g,
 					decode = function (s) { return decodeURIComponent(s.replace(pl, " ")); },
 					query  = window.location.search.substring(1);
 
-				urlParams = {};
+				var urlParams = {};
 				while (match = search.exec(query))
 				urlParams[decode(match[1])] = decode(match[2]);
-			})();
+				return urlParams;
+			}();
 
-			var total_time = urlParams.time || 180;
-			var timer = total_time; // counts down
-			console.log($("#time_dial").val());
-			$("#time_dial").knob({
-					change : function (value) {
-                        console.log("change : " + value);
-						timer = total_time - Math.round(value);
-                    },
-				/*
-                    release : function (value) {
-                        console.log("release : " + value);
-                    },
-                    cancel : function () {
-                        console.log("cancel : ", this);
-                    },
-                    format : function (value) {
-                        console.log("format : " + value);
-                    },
-					*/
-
-				'draw': function() {
-					// this.cv sets position of wheel, relative to min and max values
-					// this.i is input, used to set value of inside the wheel
-					this.cv = total_time - timer;
-
-					var mins = Math.floor(timer/60);
-					var secs = timer%60;
-					$(this.i).html("-"+mins+":"+((secs+'').length == 1 ? '0'+secs : secs));
-				}
-			}).trigger('configure', {
-				"min":0,
-				"max":total_time,
-			});
-
-			// Count down the time
-			var timer_interval = setInterval(update_timer, 1000); // 1000ms
-			function update_timer() {
-				if (timer > 0) {
-					timer = timer - 1;
-					$("#time_dial").trigger('change');
-				} else {
-					clearInterval(timer_interval);
-					alert("Ding!");
-				}
-			}
-			// Manually trigger the draw on load, otherwise value could be left over from page reload
-			$("#time_dial").trigger('change');
-
-			function increment_time(knob, seconds) {
-				total_time = total_time + seconds;
-				timer = timer + seconds;
-				$(knob).trigger('configure', { "max":total_time } );
-			}
-			// $("#time_dial").knob().on("click", function() { increment_time(this, 30) });
-			$("#time_dial").on("click", function() { increment_time(this, 30) });
-
-		</script>
-		<script>
-			function draw_power_bg(canvas) {
-				var canvas = document.getElementById("power_triangle");
-				var ctx = canvas.getContext("2d");
-
-				// Draw a triangle depicting increasing power
-				ctx.beginPath();
-				ctx.moveTo(0, canvas.height);
-				ctx.lineTo(canvas.width, canvas.height);
-				ctx.lineTo(canvas.width, 0);
-				ctx.closePath();
-
-				var gradient = ctx.createLinearGradient(0,-canvas.width*0.2, canvas.width,0);
-				gradient.addColorStop(0,"blue");
-				gradient.addColorStop(1,"red");
-
-				ctx.fillStyle = gradient;
-				ctx.fill();
-			}
-
-			// Draw a marker depicting current power
-			function draw_fixed_power_marker(canvas) {
-				var ctx = canvas.getContext("2d");
-
-				ctx.lineWidth = 5;
-
-				ctx.beginPath();
-				ctx.moveTo(0, ctx.lineWidth/2);
-				ctx.lineTo(canvas.width, ctx.lineWidth/2);
-				ctx.moveTo(0, canvas.height-ctx.lineWidth/2);
-				ctx.lineTo(canvas.width, canvas.height-ctx.lineWidth/2);
-				ctx.moveTo(canvas.width/2, 0);
-				ctx.lineTo(canvas.width/2, canvas.height);
-
-				ctx.strokeStyle = "black";
-				ctx.stroke();
-			}
-
-			// Draw a marker depicting current power
-			function draw_power_marker(percentage) {
-				var canvas = document.getElementById("power_triangle");
-				var ctx = canvas.getContext("2d");
-
-				var portion = percentage/100;
-
-				ctx.beginPath();
-				ctx.moveTo(canvas.width*portion-ctx.lineWidth*1.5, ctx.lineWidth/2);
-				ctx.lineTo(canvas.width*portion+ctx.lineWidth*1.5, ctx.lineWidth/2);
-				ctx.moveTo(canvas.width*portion-ctx.lineWidth*1.5, canvas.height-ctx.lineWidth/2);
-				ctx.lineTo(canvas.width*portion+ctx.lineWidth*1.5, canvas.height-ctx.lineWidth/2);
-				ctx.moveTo(canvas.width*portion, 0);
-				ctx.lineTo(canvas.width*portion, canvas.height);
-
-				ctx.lineWidth = 5; // Size of current power marker
-				ctx.strokeStyle = "black";
-				ctx.stroke();
-			}
-
-			// Make the marker move
-			document.getElementById("power_triangle").addEventListener('click', function(event) {
-				if (event.button) return; // Not left-button, ignore
-
-				var canvas = document.getElementById("power_triangle");
-
-				// TODO: De-jquery, finding relative position without it is a PIA though
-				var x = event.pageX - $(canvas).offset().left;
-				var pcnt = x/canvas.width*100;
-
-				set_power_marker(pcnt);
-			});
+			time_dial($("#time_dial"), urlParams.time || 180, function(){ alert("Ding!"); });
 
 			draw_power_bg( document.getElementById("power_triangle") );
-			// draw_power_marker(80);
 			draw_fixed_power_marker( document.getElementById("power_marker") );
-
-			function pcnt2left(pcnt) {
-				var tri = document.getElementById("power_triangle");
-				var mrk = document.getElementById("power_marker");
-
-				var x = pcnt/100*tri.width;
-				return x - tri.width - mrk.width/2 - 4; /* Not sure why there is the 4px offset */
-			}
-
-			function left2pcnt(left) {
-				var tri = document.getElementById("power_triangle");
-				var mrk = document.getElementById("power_marker");
-
-				var x = left + tri.width + mrk.width/2 + 4; /* Not sure why there is the 4px offset */
-				return x/tri.width*100
-			}
-
-
-			function set_power_marker(percentage) {
-				var mrk = document.getElementById("power_marker");
-
-				mrk.style.left = pcnt2left(percentage) + "px";
-
-				document.getElementById("power_pcnt").innerHTML = Math.round(percentage);
-				var microwave_wattage = 1200;
-				document.getElementById("power_watts").innerHTML = Math.round(microwave_wattage*percentage/100);
-			}
-
 			set_power_marker(100);
-
-			document.getElementById("power_marker").onmousedown = function(event) {
-				if (event.button) return; // Not left-button, ignore
-
-				var start = event.pageX;
-
-				var mrk = document.getElementById("power_marker");
-				var abs_left = $("#power_triangle").offset().left+4; // TODO: 4px offset? why...
-				var width = document.getElementById("power_triangle").offsetWidth;
-
-				var left = parseFloat(mrk.style.left) || 0;
-
-				document.onmousemove = function(e) {
-					if (e.pageX < abs_left) {
-						mrk.style.left = (left + abs_left-start)+"px";
-					} else if (e.pageX > abs_left+width) {
-						mrk.style.left = (left + abs_left-start+width)+"px";
-					} else {
-						mrk.style.left = (left + e.pageX-start)+"px";
-					}
-				}
-
-				document.onmouseup = function(e) {
-					document.onmousemove = document.onmouseup = null;
-					set_power_marker( left2pcnt( parseFloat(mrk.style.left) || 0 ) );
-				};
-			};
-
-
-
-
-
-
-
 		</script>
 	</body>
 </html>

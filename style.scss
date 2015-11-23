@@ -1,0 +1,313 @@
+/* Screen is 480x800 pixels */
+$width: 480px;
+$height: 800px;
+
+$col_width: 80px;
+
+// Broad Layout
+#microwave_container {
+	display: table;
+	width: $width;
+	height: $height;
+	margin: 0 auto; // Center container
+
+	> div {
+		display: table-cell;
+		height: 100%;
+		vertical-align: top;
+	}
+
+	.left_col, .right_col {
+		width: $col_width;
+	}
+}
+
+#left_nav_column {
+	padding-right: 5px; /* Cell - can't use margin */
+}
+
+
+// Styling
+body {
+	background-color: black;
+}
+
+#microwave_container {
+	background-color: #EEE;
+	font-size: 24px;
+}
+
+#left_nav_column {
+	text-align: center;
+
+	.nav {
+		margin-top: 60px;
+		font-size: 28px;
+		font-weight: 600;
+		.fa {
+			font-size: 34px;
+			font-weight: normal;
+		}
+	}
+
+	.nav-pills > li > a {
+		border: 2px solid #337ab7;
+		border-radius: 10px;
+		padding-top: 10px;
+		padding-bottom: 10px;
+		margin: 5px;
+		line-height: 1;
+	}
+}
+
+
+#qcook_tabcontainer {
+	$h1_h2_height: 122.6;
+
+	& > div ul {
+		display: flex;
+		flex-direction: column;
+		/* height: 678px; TODO: Need to set this for other lists, disable for A-Z */
+		padding: 0;
+
+		& > li {
+			border: thin solid;
+			display: table;
+			padding: 10px;
+			width: 95%;
+			border-radius: 10px;
+			margin: 10px 0;
+			cursor: pointer;
+			background-color: white;
+
+			& > span {
+				display: table-cell;
+			}
+
+			.score {
+				text-align: right;
+				width: 60px;
+			}
+		}
+	}
+
+
+	#alphabetical_list {
+		height: $height - $h1_h2_height;
+		margin-right: 30px;
+		padding-right: 2px; /* Leave space for border */
+
+		ul > li {
+			width: 100%;
+		}
+	}
+
+
+	#scroll_bg {
+		height: $height - $h1_h2_height;
+		position: relative;
+		float: right;
+		right: 24px;
+		width: 1px;
+		line-height: 1.08em;
+		text-align: center;
+		word-wrap: break-word;
+		font-family: monospace;
+	}
+
+
+	.scrollbar {
+		/* background: #ccc none repeat scroll 0 0; */
+		background: rgba(0,0,0,0.2);
+		height: $height - $h1_h2_height;
+		line-height: 0;
+		position: relative;
+		float: right;
+		right: 0;
+		width: 1.2em;
+		z-index: 20;
+
+		.handle {
+			background-color: rgba(51,122,183,0.6);
+			border: thin solid rgb(51,122,183);
+			cursor: pointer;
+			margin: 0 auto;
+			height: 1.2em;
+			width: 1.2em;
+			border-radius: 1.2em;
+
+			.mousearea {
+				height: 100%;
+				left: -10px;
+				position: absolute;
+				top: 0;
+				width: 22px;
+			}
+		}
+	}
+}
+
+
+a span.glyphicon {
+	top: 0.1em; /* glyphicons appear too high, vertically */
+}
+
+
+
+iframe {
+	margin: 0;
+	padding: 0;
+	border: none;
+}
+
+#time_heading, #temp_heading {
+	height: 20px;
+	font-weight: bold;
+	text-align: center;
+	margin: 7px 0;
+}
+
+#temp_data {
+	border-top: thin solid #333;
+	border-left: thin solid #333;
+}
+
+#thermal_image {
+	text-align: center;
+	margin: 10px;
+}
+
+#thermal_image img, #thermal_image iframe {
+	width: 100%;
+	border: 3px solid;
+}
+
+
+
+#center_column h1, #center_column h2 {
+	/* Center text, relative to whole page */
+	margin-left: -$col_width;
+	text-align: center;
+}
+
+#details {
+	display: table;
+	width: 100%;
+
+	span {
+		display: table-cell;
+		text-align: center;
+	}
+}
+
+#time_data, #temp_data {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	height: 780px;
+}
+
+#time_details > div {
+	border: thin solid;
+}
+
+#temp_data {
+	background-image: linear-gradient(
+		orange, red 20%, blue
+	);
+	color: black;
+	& > span {
+		text-align: right;
+	}
+}
+
+#extras {
+	display: table;
+	table-layout: fixed;
+	border-spacing: 5px;
+	width: 318px;
+	bottom: 0px;
+	margin-bottom: 20px;
+
+	& > a {
+		display: table-cell;
+	}
+
+	.glyphicon, .fa {
+		font-size: 60px;
+	}
+}
+
+
+.btn {
+	font-size: 24px;
+}
+
+.btn-mw {
+	background-color: #CCC;
+	color: black;
+	border: thin solid black;
+	border-radius: 10px;
+}
+
+.qcook {
+	display: block;
+	margin: 50px 10px;
+	padding: 20px 0;
+	text-align: center;
+	height: 100px;
+	line-height: 60px; /* height-padding = 100-20-20 */
+}
+
+#time_data, #temp_data {
+	cursor: crosshair;
+}
+
+a#stop { /* Work around specificity issue, trump #extras > a */
+	width: 100%;
+	border: 3px solid #800;
+	border-radius: 10px;
+	color: #800;
+	background-color: #E00;
+
+	& > span {
+		/* Outline the stop character to highlight it.
+		 * We do this by putting a shadow on it, no offset and a small radius.
+		 * One shadow isn't visible enough, counter this by doing a few of them.
+		 * The black tints it black, doesn't apply a hard black colour.
+		 */
+		text-shadow: 0 0 3px #000, 0 0 3px #000, 0 0 3px #000
+	}
+}
+
+#time_dial {
+	cursor: pointer;
+}
+
+#power_triangle, #power_marker {
+	position: relative;
+}
+
+#power_marker {
+	/* background: rgba(0,200,0,50); */
+	top: 5px;
+	cursor: move;
+}
+
+#power_triangle {
+	cursor: pointer;
+}
+
+// Genericish Utility classes
+.nav-stacked > li.spacer {
+	height: 50px;
+}
+
+.noselect {
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
