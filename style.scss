@@ -72,19 +72,28 @@ body {
 		padding: 0;
 
 		& > li {
-			border: thin solid;
-			display: table;
-			padding: 10px;
-			width: 95%;
-			border-radius: 10px;
-			margin: 10px 0;
-			cursor: pointer;
-			background-color: white;
+			display: block;
 
-			& > span {
-				display: table-cell;
+			.btn {
+				border: thin solid;
+				padding: 10px;
+				width: 95%;
+				border-radius: 10px;
+				margin: 10px 0;
+			}
+			
+			a {
+				display: table;
+				width: 100%;
+
+				& > span {
+					display: table-cell;
+				}
 			}
 
+			.title {
+				text-align: left;
+			}
 			.score {
 				text-align: right;
 				width: 60px;
@@ -165,7 +174,7 @@ iframe {
 	height: 20px;
 	font-weight: bold;
 	text-align: center;
-	margin: 7px 0;
+	margin: 0;
 }
 
 #temp_data {
@@ -205,7 +214,7 @@ iframe {
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
-	height: 780px;
+	height: 770px;
 	position: absolute;
 	bottom: 0;
 }

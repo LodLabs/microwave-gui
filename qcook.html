@@ -44,8 +44,10 @@
 						<h2>Recomended</h2>
 						<ul>
 							<li ng-repeat="entry in entries | orderBy:'-score' | limitTo:5">
-								<span class="title">{{entry.title}}</span>
-								<span class="score">{{entry.score}}</span>
+								<a class="btn btn-default" ng-href="qcook_target.html?{{entry.key}}">
+									<span class="title">{{entry.title}}</span>
+									<span class="score">{{entry.score}}</span>
+								</a>
 							</li>
 						</ul>
 					</div>
@@ -53,8 +55,10 @@
 						<h2>Favourites</h2>
 						<ul>
 							<li ng-repeat="entry in entries | filter:{recommended:true}:true">
-								<span class="title">{{entry.title}}</span>
-								<span class="score">{{entry.score}}</span>
+								<a class="btn btn-default" ng-href="qcook_target.html?{{entry.key}}">
+									<span class="title">{{entry.title}}</span>
+									<span class="score">{{entry.score}}</span>
+								</a>
 							</li>
 						</ul>
 					</div>
@@ -71,8 +75,10 @@
 						<div id="alphabetical_list" class="frame">
 						<ul class="slidee">
 							<li ng-repeat="entry in entries | orderBy:'title'">
-								<span class="title">{{entry.title}}</span>
-								<span class="score">{{entry.score}}</span>
+								<a class="btn btn-default" ng-href="qcook_target.html?{{entry.key}}">
+									<span class="title">{{entry.title}}</span>
+									<span class="score">{{entry.score}}</span>
+								</a>
 							</li>
 						</ul>
 						</div>
@@ -118,63 +124,75 @@
 				$scope.entries = [
 					{
 						"title"       : "Feed me a stray cat",
+						"key"         : "feed",
 						"score"       : 23,
 						"recommended" : true,
 					},
 					{
-						"title"        : "Boil liquid - 100°",
-						"score"        : 51,
-						"recommended"  : false,
+						"title"       : "Boil liquid - 100°",
+						"key"         : "boil",
+						"score"       : 51,
+						"recommended" : false,
 					},
 					{
-						"title"        : "Defrost",
-						"score"        : 42,
-						"recommended"  : false,
+						"title"       : "Defrost",
+						"key"         : "defrost",
+						"score"       : 42,
+						"recommended" : false,
 					},
 					{
-						"title"        : "Heat liquid - 80°",
-						"score"        : 51,
-						"recommended"  : false,
+						"title"       : "Heat liquid - 80°",
+						"key"         : "heat",
+						"score"       : 51,
+						"recommended" : false,
 					},
 					{
-						"title"        : "Popcorn",
-						"score"        : 12,
-						"recommended"  : false,
+						"title"       : "Popcorn",
+						"key"         : "popcorn",
+						"score"       : 12,
+						"recommended" : false,
 					},
 					{
-						"title"        : "Moose",
-						"score"        : 12,
-						"recommended"  : false,
+						"title"       : "Moose",
+						"key"         : "mmm",
+						"score"       : 12,
+						"recommended" : false,
 					},
 					{
-						"title"        : "Moose jerky",
-						"score"        : 12,
-						"recommended"  : false,
+						"title"       : "Moose jerky",
+						"key"         : "mmm_twitchy",
+						"score"       : 12,
+						"recommended" : false,
 					},
 					{
-						"title"        : "Moose souflet",
-						"score"        : 12,
-						"recommended"  : false,
+						"title"       : "Moose souflet",
+						"key"         : "mmm_rises",
+						"score"       : 12,
+						"recommended" : false,
 					},
 					{
-						"title"        : "Moose soup",
-						"score"        : 12,
-						"recommended"  : false,
+						"title"       : "Moose soup",
+						"key"         : "mmm_bits",
+						"score"       : 12,
+						"recommended" : false,
 					},
 					{
-						"title"        : "Moose tail",
-						"score"        : 12,
-						"recommended"  : false,
+						"title"       : "Moose tail",
+						"key"         : "mmm_flies",
+						"score"       : 12,
+						"recommended" : false,
 					},
 					{
-						"title"        : "Yak",
-						"score"        : 12,
-						"recommended"  : false,
+						"title"       : "Yak",
+						"key"         : "yuk",
+						"score"       : 12,
+						"recommended" : false,
 					},
 					{
-						"title"        : "Zebra",
-						"score"        : 12,
-						"recommended"  : false,
+						"title"       : "Zebra",
+						"key"         : "stripy",
+						"score"       : 12,
+						"recommended" : false,
 					}
 
 				];
