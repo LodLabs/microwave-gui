@@ -1,3 +1,10 @@
 start.css
 start.css.map
+start.min.css
+start.min.css.map
+thermometer_C.css
+thermometer_C.css.map
+thermometer_C.min.css
+thermometer_C.min.css.map
 .*
+node_modules

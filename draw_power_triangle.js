@@ -69,15 +69,16 @@ function pcnt2left(pcnt) {
 	var mrk = document.getElementById("power_marker");
 
 	var x = pcnt/100*tri.width;
-	return x - tri.width - mrk.width/2 - 4; /* Not sure why there is the 4px offset */
+	return x - mrk.width/2; /* Not sure why there is the 4px offset */
 }
 
 function left2pcnt(left) {
 	var tri = document.getElementById("power_triangle");
 	var mrk = document.getElementById("power_marker");
 
-	var x = left + tri.width + mrk.width/2 + 4; /* Not sure why there is the 4px offset */
-	return x/tri.width*100
+	var x = left + mrk.width/2; /* Not sure why there is the 4px offset */
+	var pcnt = x/tri.width*100
+	return pcnt > 100 ? 100 : pcnt < 0 ? 0 : pcnt;
 }
 
 

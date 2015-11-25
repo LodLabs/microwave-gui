@@ -1,0 +1,16 @@
+/* Screen is 480x800 pixels */
+$width: 480px;
+$height: 800px;
+$footer_height: 100px;
+
+// $primary_color: #B47570;
+$primary_color: #eba486;
+$emphasis_color: #9F583A; // Darken stop working for me :(
+$strong_color: #520B00;
+$text_color: $strong_color; // #333;
+
+$font_size_base: 24px;
+$line_height_base: 20/14; // From Bootstrap
+$line_height_calc: floor($font_size_base * $line_height_base);
+
+$col_width: 120px;

@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Based on work from https://commons.wikimedia.org/wiki/File:Thermometer_CF.svg 2014-04-05T1413
+	 Public domain licence -->
+<svg
+	xmlns:xlink="http://www.w3.org/1999/xlink"
+	xmlns="http://www.w3.org/2000/svg"
+	version="1.1"
+	viewBox="0 0 200 1800"
+	>
+	<link xmlns="http://www.w3.org/1999/xhtml" href="/thermometer_C.css" type="text/css" rel="stylesheet"/>
+	<defs>
+		<g id="degree_markers">
+			<!-- Draw 1 major tick and above that 4 minor ticks, coordinate base is the bottom right corner -->
+			<line x1="0" y1="0"  x2="-50" y2="0"  class="major_tick" />
+			<line x1="0" y1="20" x2="-20" y2="20" class="minor_tick" />
+			<line x1="0" y1="40" x2="-20" y2="40" class="minor_tick" />
+			<line x1="0" y1="60" x2="-20" y2="60" class="minor_tick" />
+			<line x1="0" y1="80" x2="-20" y2="80" class="minor_tick" />
+		</g>
+	</defs>
+	<!-- Make zero the middle of the rise bar, corresponding to the entry before the first visible one.
+			This is a space near the top of the bulb.
+			Each degree tick is 100 up from here.
+			Also invert the y axis, bit of a nasty thing to do but makes result easier to read
+	-->
+	<g transform="translate(100,1620) scale(1,-1)">
+
+		<g transform="translate(80,0)">
+
+			<g transform="translate(-100,0)">
+				<use xlink:href="#degree_markers" y="100"/>
+				<use xlink:href="#degree_markers" y="200"/>
+				<use xlink:href="#degree_markers" y="300"/>
+				<use xlink:href="#degree_markers" y="400"/>
+				<use xlink:href="#degree_markers" y="500"/>
+				<use xlink:href="#degree_markers" y="600"/>
+				<use xlink:href="#degree_markers" y="700"/>
+				<use xlink:href="#degree_markers" y="800"/>
+				<use xlink:href="#degree_markers" y="900"/>
+				<use xlink:href="#degree_markers" y="1000"/>
+				<use xlink:href="#degree_markers" y="1100"/>
+				<use xlink:href="#degree_markers" y="1200"/>
+				<use xlink:href="#degree_markers" y="1300"/>
+				<!-- Top line needs major tick but not minors -->
+				<line x1="0" x2="-50" y1="1400" y2="1400" class="major_tick" />
+			</g>
+
+			<!-- Offset by 15 vertically centers text around the marker -->
+			<!-- Flip back - otherwise text comes out upsidedown -->
+			<g class="scale_text" transform="translate(-25,-15) scale(1,-1)">
+				<text y= "-100">  20</text>
+				<text y= "-200">  30</text>
+				<text y= "-300">  40</text>
+				<text y= "-400">  50</text>
+				<text y= "-500">  60</text>
+				<text y= "-600">  70</text>
+				<text y= "-700">  80</text>
+				<text y= "-800">  90</text>
+				<text y= "-900"> 100</text>
+				<text y="-1000"> 110</text>
+				<text y="-1100"> 120</text>
+				<text y="-1200"> 130</text>
+				<text y="-1300"> 140</text>
+				<text y="-1400"> 150</text>
+			</g>
+
+		</g>
+
+		<g transform="translate(-3,1530)">
+			<text transform="scale(1,-1)" class="heading_text">°C</text>
+		</g>
+
+		<!-- Red contents of thermometer -->
+		<!-- Note order/layering is important, rise, bulb then outline -->
+		<!-- Height corresponds to 100/division -->
+		<rect
+			id="rise"
+			transform="translate(-10,0) "
+			class="inner_outline inner_contents"
+			width = "20"
+			height = "800"
+		>
+			<animate 
+				attributeType="XML"
+				attributeName="height"
+				from="100"
+				to="1000"
+				dur="1s"
+				begin="indefinite"
+			/>
+		</rect>
+
+		<!-- Red bulb at base of thermometer - matches first part of outline -->
+		<path
+			class="inner_contents"
+			d="m -10.5,50
+				c -14,-4 -25,-17 -25,-32
+				l 0,-110
+				a 35,-30 180 1 1 70,0
+				l 0,110
+				c 0,15 -10,28 -25,32
+				z"
+		/>
+
+		<path
+			class="inner_outline"
+			d="m -10.5,50
+				c -14,-4 -25,-17 -25,-32
+				l 0,-110
+				a 35,-30 180 1 1 70,0
+				l 0,110
+				c 0,15 -10,28 -25,32
+				l 0,1430
+				a -10,-10 180 1 1 -20,0
+				l 0,-1430
+				z"
+		/>
+
+		<!-- setting negative x/y doesn't seem to work very well - use translate instead -->
+		<!-- -2 to width and height so lines fit nicely inside drawing dimensions -->
+		<!-- Outer frame is used as mouse target, for this to work nicely we play 2 games,
+			 1. The rect must be the last item, so it is drawn over the top of the others.
+			 2. The frame is set to have a transparent fill, rather than no fill.
+			    The fill means that the rect occupies the interior area, allowing javascript
+				mouse action sensing as well as CSS cursor modifications.
+		-->
+		<rect
+			id="outer_frame"
+			transform="translate(-100,-178)"
+			class="outer_outline"
+			width="199"
+			height="1796"
+			ry="110"
+			rx="105"
+		/>
+
+
+	</g>
+</svg>

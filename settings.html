@@ -1,189 +1,63 @@
-<!DOCTYPE html>
-<html lang="en">
-	<head>
-		<meta charset='utf-8'>
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<meta http-equiv="Content-Language" content="en">
-		<meta name="viewport" content="width=480">
-
-		<title>Microwave Start page</title>
-
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
-		<script src="https://code.jquery.com/jquery-2.1.4.min.js" integrity="sha384-R4/ztc4ZlRqWjqIuvf6RX5yb/v90qNGx6fS48N0tRxiGkqveZETq72KgDVJCp2TC" crossorigin="anonymous"></script>
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" integrity="sha512-K1qjQ+NcF2TYO/eI3M6v8EiNYZfA95pQumfvcVrTHtwQVDG+aHRqLi/ETn2uB+1JqwYqVG3LIvdm9lj6imS/pQ==" crossorigin="anonymous"></script>
-
-		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
-
-		<script src="sly/sly-1.6.1.js"></script>
-
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
-
-		<link href="start.css" rel="stylesheet" type="text/css">
-
-	</head>
-	<body id="settings" ng-app="qcook-app">
-		<!-- Microwave screen is 480x800 pixels -->
-		<div id="microwave_screen"><!-- Two containers required to enforce strict sizing -->
-		<div id="microwave_container">
-			<div class="left_col">
-				<ul class="nav nav-stacked" role="tablist">
-					<li role="presentation" class="active">
-						<a href="#general" aria-controls="network" role="tab" data-toggle="tab">
-							General
-						</a>
-					</li>
-					<li role="presentation">
-						<a href="#network" aria-controls="network" role="tab" data-toggle="tab">
-							Network
-						</a>
-					</li>
-					<li role="presentation">
-						<a href="#upgrade" aria-controls="upgrade" role="tab" data-toggle="tab">
-							Upgrade
-						</a>
-					</li>
-					<li role="presentation">
-						<a href="#audible" aria-controls="audible" role="tab" data-toggle="tab">
-							Sound
-						</a>
-					</li>
-					<li role="presentation">
-						<a href="#screen" aria-controls="screen" role="tab" data-toggle="tab">
-							Screen
-						</a>
-					</li>
-					<li class="spacer" aria-hidden="true"></li>
-					<li role="presentation">
-						<a href="start.html">
-							<span class="fa fa-home" aria-hidden="true"></span>
-							<span class="sr-only">Home</span>
-						</a>
-					</li>
-				</ul>
+<div id="menu_layout">
+	<div class="left_col">
+		<ul class="nav nav-stacked" role="tablist">
+			<li role="presentation" class="active">
+				<a data-target="#general" aria-controls="network" role="tab" data-toggle="tab">
+					General
+				</a>
+			</li>
+			<li role="presentation">
+				<a data-target="#network" aria-controls="network" role="tab" data-toggle="tab">
+					Network
+				</a>
+			</li>
+			<li role="presentation">
+				<a data-target="#upgrade" aria-controls="upgrade" role="tab" data-toggle="tab">
+					Upgrade
+				</a>
+			</li>
+			<li role="presentation">
+				<a data-target="#audible" aria-controls="audible" role="tab" data-toggle="tab">
+					Sound
+				</a>
+			</li>
+			<li role="presentation">
+				<a data-target="#screen" aria-controls="screen" role="tab" data-toggle="tab">
+					Screen
+				</a>
+			</li>
+			<li class="spacer" aria-hidden="true"></li>
+			<li role="presentation">
+				<a href="/">
+					<span class="fa fa-home" aria-hidden="true"></span>
+					<span class="sr-only">Home</span>
+				</a>
+			</li>
+		</ul>
+	</div>
+	<div id="center_column" class="center_col">
+		<h1>Settings</h1>
+		<div id="qcook_tabcontainer" class="tab-content">
+			<div role="tabpanel" class="tab-pane active" id="general">
+				<h2>General</h2>
+				<p>Language, etc.</p>
 			</div>
-			<div id="center_column">
-				<h1>Settings</h1>
-				<div id="qcook_tabcontainer" class="tab-content">
-					<div role="tabpanel" class="tab-pane active" id="general" ng-controller="qcook">
-						<h2>General</h2>
-						<p>Language, etc.</p>
-					</div>
-					<div role="tabpanel" class="tab-pane" id="network" ng-controller="qcook">
-						<h2>Network</h2>
-						<p>DHCP, Manual IP address and DNS settings, do people still use proxies? </p>
-					</div>
-					<div role="tabpanel" class="tab-pane" id="upgrade">
-						<h2>Upgrade</h2>
-						<p>Toggle automatic upgrade, automatic security upgrade, manually check upgrade status and trigger. Probably at a general rather than package level.</p>
-					</div>
-					<div role="tabpanel" class="tab-pane" id="audible">
-						<h2>Audible Alerts</h2>
-						<p>Sounds, dings, 
-					</div>
-					<div role="tabpanel" class="tab-pane" id="screen">
-						<h2>Screen</h2>
-						<p>Sounds, dings, 
-					</div>
-				</div>
+			<div role="tabpanel" class="tab-pane" id="network">
+				<h2>Network</h2>
+				<p>DHCP, Manual IP address and DNS settings, do people still use proxies? </p>
+			</div>
+			<div role="tabpanel" class="tab-pane" id="upgrade">
+				<h2>Upgrade</h2>
+				<p>Toggle automatic upgrade, automatic security upgrade, manually check upgrade status and trigger. Probably at a general rather than package level.</p>
+			</div>
+			<div role="tabpanel" class="tab-pane" id="audible">
+				<h2>Audible Alerts</h2>
+				<p>Sounds, dings, 
+			</div>
+			<div role="tabpanel" class="tab-pane" id="screen">
+				<h2>Screen</h2>
+				<p>Sounds, dings, 
 			</div>
 		</div>
-		</div>
-
-		<script>
-			$('.nav-tabs a').click(function(e) {
-				e.preventDefault();
-				$(this).tab('show');
-			});
-		</script>
-		<script>
-			var options = {
-				/* itemNav: 'basic', */
-				smart: 0,
-				activateOn: 'click',
-				mouseDragging: 1, // Click-dragging on frame
-				touchDragging: 1, // Touch-dragging on frame
-				releaseSwing: 1,
-				scrollBar: $('.scrollbar'),
-				scrollBy: 1,
-				dragHandle: 1, // Click-dragging on scrollbar handle
-				dynamicHandle: 0,
-			};
-			var frame = new Sly('#alphabetical_list', options).init();
-
-			$('a[href="#alphabetical"]').on('shown.bs.tab', function(e) {
-				frame.reload();
-			});
-		</script>
-		<script>
-			var myApp = angular.module('qcook-app',[]);
-			myApp.controller('qcook', ['$scope', function($scope) {
-				$scope.entries = [
-					{
-						"title"       : "Self saucing pudding",
-						"key"         : "saucy",
-						"favourite"   : true,
-					},
-					{
-						"title"       : "Mug cake",
-						"key"         : "mug",
-						"favourite"   : true,
-					},
-					{
-						"title"       : "Lemonade cake",
-						"key"         : "bubbly",
-						"favourite"   : true,
-					},
-					{
-						"title"       : "Strawberry and Buckweat Breakfast Bowl",
-						"key"         : "gritts",
-						"favourite"   : false,
-					},
-					{
-						"title"       : "Crispy Bacon",
-						"key"         : "backon",
-						"favourite"   : false,
-					},
-					{
-						"title"       : "Vegan Blueberry Muffin",
-						"key"         : "mmm",
-						"favourite"   : false,
-					},
-					{
-						"title"       : "Mug Quiche",
-						"key"         : "mmm_twitchy",
-						"favourite"   : false,
-					},
-					{
-						"title"       : "Poached Eggs",
-						"key"         : "mmm_rises",
-						"favourite"   : false,
-					},
-					{
-						"title"       : "Sweet Potato and Parsnip Chips",
-						"key"         : "mmm_bits",
-						"favourite"   : false,
-					},
-					{
-						"title"       : "Mug Banana Bread",
-						"key"         : "mmm_flies",
-						"favourite"   : false,
-					},
-					{
-						"title"       : "Grain-Free English Muffin",
-						"key"         : "yuk",
-						"favourite"   : false,
-					},
-					{
-						"title"       : "Zebra",
-						"key"         : "stripy",
-						"favourite"   : false,
-					}
-
-				];
-				console.log($scope);
-			}]);
-		</script>
-	</body>
-</html>
-
-
+	</div>
+</div>

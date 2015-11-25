@@ -1,0 +1,8 @@
+// Adjust the bootstrap default CSS to meet our needs
+
+// Don't use empty href links like bootstrap expects - stuffs up single page navigation
+.nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
+
+a span.glyphicon {
+	top: 0.1em; /* glyphicons appear too high, vertically */
+}

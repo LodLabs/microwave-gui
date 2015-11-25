@@ -1,0 +1,57 @@
+@import 'variables';
+
+$line_color: $strong_color;
+$text_color: $strong_color;
+$liquid_color: $primary_color;
+
+/* Override defaults, bias toward inaction */
+path, rect, text, line {
+	stroke:none;
+	fill:none;
+	fill-opacity:1;
+	stroke-opacity:1;
+	stroke-miterlimit:4;
+	stroke-dasharray:none;
+	font-family:sans-serif;
+}
+
+.major_tick {
+	stroke: $line_color;
+	stroke-width: 1;
+}
+.minor_tick {
+	stroke: $line_color;
+	stroke-width: 1;
+}
+
+.scale_text text, .scale_text {
+	font-size:36px;
+	text-anchor:middle;
+	fill: $text_color;
+}
+.heading_text {
+	font-size:50px;
+	text-anchor:middle;
+	fill: $text_color;
+}
+
+.inner_outline {
+	stroke: $line_color;
+	stroke-width:2;
+}
+.inner_contents {
+	fill: $liquid_color;
+	stroke-width:2;
+}
+.outer_outline {
+	stroke: $line_color;
+	stroke-width:2;
+	stroke-miterlimit:4;
+}
+.outer_outline {
+	cursor: crosshair;
+	// Set transparent fill - otherwise it just sets cursor for the outline
+	fill-opacity:0;
+	fill: #000000;
+}
+

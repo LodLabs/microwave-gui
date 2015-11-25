@@ -1,0 +1,40 @@
+// CSS just for elements on the start page
+
+@import 'time_select_svg';
+
+#recommended_section {
+	// To position self
+	flex: 1;
+
+	// To position children
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+
+	a.btn-round {
+		display: block;
+		width: 70%;
+		margin: 0 auto;
+		border-width: 15px;
+		border-color: $primary_color;
+
+		span {
+			display: block;
+		}
+		span.line1 {
+			font-size: 1.5em;
+		}
+	}
+}
+
+#time_data, #temp_data {
+	flex: 1;
+	cursor: crosshair;
+}
+
+#temp_data {
+	height: $height - $footer_height - 30; // 30 = space for heading
+	max-height: $height - $footer_height - 30; // 30 = space for heading
+	margin-left: 10px; // Push svg slightly to the right
+}
+

@@ -1,263 +1,26 @@
-/* Screen is 480x800 pixels */
-$width: 480px;
-$height: 800px;
+@import 'variables';
 
-$col_width: 80px;
+@import 'set_defaults';
+@import 'adjust_bootstrap';
+@import 'utility_classes';
 
-// Broad Layout
-#microwave_screen {
-	// Double-div required to prevent width creep
-	width: $width;
-	max-width: $width;
-	margin: 0 auto; // Center container
-	overflow: hidden;
-}
+@import 'layout';
+@import 'overall_styling';
 
-#microwave_container {
-	display: table;
-	width: $width;
-	height: $height;
-	margin: 0 auto; // Center container
+// Page specific elements
+@import 'start';
 
-	& > div {
-		display: table-cell;
-		height: 100%;
-		vertical-align: top;
-		position: relative; // Allows absolute positioning within divs
-	}
-
-	.left_col, .right_col {
-		width: $col_width;
-	}
-}
-
-#left_nav_column {
-	padding-right: 5px; /* Cell - can't use margin */
-}
-
-
-// Styling
-body {
-	background-color: black;
-}
-
-#microwave_container {
-	background-color: white;
-	font-size: 24px;
-}
-
-#left_nav_column {
-	text-align: center;
-
-	.nav {
-		margin-top: 60px;
-		font-size: 28px;
-		line-height: 34px;
-		.btn { 
-			font-weight: 600; // btn sets it to 400 :(
-		}
-		.fa {
-			font-size: 34px;
-			font-weight: normal;
-		}
-	}
-
-	.nav-pills > li > a {
-		border: 2px solid;
-		border-color: black;
-		border-radius: 10px;
-		padding-top: 10px;
-		padding-bottom: 10px;
-		margin: 5px;
-	}
-
-	.nav-pills > li.active > a {
-		background: #888;
-		color: white;
-	}
-}
-
-#settings {
-	font-size: 20px;
-
-	.left_col {
-		background: #888;
-	}
-
-	.left_col .nav {
-		li {
-			margin: 0;
-		}
-		li.active a {
-			color: white;
-			background: #444;
-			border-left: 5px solid white;
-		}
-		a {
-			color: black;
-			border-left: 5px solid transparent;
-			&:hover, &:focus {
-				background-color: #666;
-			}
-			.fa {
-				// Enlarge icon
-				font-size: 28px;
-				line-height: 28px;
-				// Center icon
-				display: block;
-				text-align: center;
-				border-right: 5px solid transparent;
-			}
-		}
-	}
-}
-
-
-#qcook_tabcontainer {
-	$h1_h2_height: 122.6;
-
-	& > div ul {
-		display: flex;
-		flex-direction: column;
-		/* height: 678px; TODO: Need to set this for other lists, disable for A-Z */
-		padding: 0;
-
-		& > li {
-			display: block;
-
-			.btn {
-				border: thin solid;
-				padding: 10px;
-				width: 95%;
-				border-radius: 10px;
-				margin: 10px 0;
-			}
-			
-			a {
-				display: table;
-				table-layout: fixed;
-				overflow: hidden;
-				width: 100%;
-
-				& > span {
-					display: table-cell;
-					text-overflow: ellipsis;
-					overflow: hidden;
-				}
-			}
-
-			.title {
-				text-align: left;
-			}
-			.score {
-				text-align: right;
-				width: 60px;
-			}
-		}
-	}
-
-
-	#alphabetical_list {
-		height: $height - $h1_h2_height;
-		margin-right: 30px;
-		padding-right: 2px; /* Leave space for border */
-
-		ul > li {
-			width: 100%;
-		}
-	}
-
-
-	#scroll_bg {
-		height: $height - $h1_h2_height;
-		position: relative;
-		float: right;
-		right: 24px;
-		width: 1px;
-		line-height: 1.08em;
-		text-align: center;
-		word-wrap: break-word;
-		font-family: monospace;
-	}
-
-
-	.scrollbar {
-		/* background: #ccc none repeat scroll 0 0; */
-		// background: rgba(0,0,0,0.2);
-		height: $height - $h1_h2_height;
-		border-left: thin solid;
-		border-top: thin solid;
-		line-height: 0;
-		position: relative;
-		float: right;
-		right: 0;
-		width: 1.2em;
-		z-index: 20;
-
-		.handle {
-			// background-color: rgba(51,122,183,0.6);
-			// border: thin solid rgb(51,122,183);
-			background-color: rgba(200,200,200,0.6);
-			border: thin solid #AAA;
-			cursor: pointer;
-			margin: 0 auto;
-			height: 1.2em;
-			width: 1.2em;
-			border-radius: 1.2em;
-
-			.mousearea {
-				height: 100%;
-				left: -10px;
-				position: absolute;
-				top: 0;
-				width: 22px;
-			}
-		}
-	}
-}
-
-
-a span.glyphicon {
-	top: 0.1em; /* glyphicons appear too high, vertically */
-}
-
-
-
-iframe {
-	margin: 0;
-	padding: 0;
-	border: none;
-}
-
-#time_heading, #temp_heading {
-	height: 20px;
-	font-weight: bold;
-	text-align: center;
-	margin: 0;
-}
-
-#temp_data {
-	border-top: 2px solid #333;
-	border-left: 2px solid #333;
-}
 
 #thermal_image {
 	text-align: center;
 	margin: 10px;
+	& > * {
+		width: 100%;
+		border: 3px solid;
+	}
 }
 
-#thermal_image img, #thermal_image iframe {
-	width: 100%;
-	border: 3px solid;
-}
 
-
-
-#center_column h1, #center_column h2 {
-	/* Center text, relative to whole page */
-	margin-left: -$col_width;
-	text-align: center;
-}
 
 #details {
 	display: table;
@@ -269,62 +32,57 @@ iframe {
 	}
 }
 
-#time_data, #temp_data {
-	display: flex;
-	flex-direction: column;
-	justify-content: space-between;
-	height: 770px;
-	position: absolute;
-	bottom: 0;
-}
 
-#time_details > div {
-	border: thin solid;
-}
 
-#temp_data {
-	background-image: linear-gradient(
-		orange, red 20%, blue
-	);
-	color: black;
-	& > span {
-		text-align: right;
+#microwave_container #extras {
+	padding: 10px 0;
+	background-color: $primary_color;
+	margin: 0;
+	.btn-round {
+		color: $emphasis_color;
 	}
 }
 
-#extras {
-	display: table;
-	table-layout: fixed;
-	border-spacing: 5px;
-	width: 318px;
-	bottom: 0px;
-	position: absolute;
-	margin-bottom: 20px;
+.btn-container .glyphicon, .fa {
+	font-size: 40px;
+}
 
-	& > a {
-		display: table-cell;
+#stop {
+	border: 3px solid #800;
+	border-radius: 10px;
+	background-color: #E00;
+
+	span {
+		/* Outline the stop character to highlight it.
+		* We do this by putting a shadow on it, no offset and a small radius.
+		* One shadow isn't visible enough, counter this by doing a few of them.
+		* The black tints it black, doesn't apply a hard black colour.
+		*/
+		text-shadow: 0 0 3px #000, 0 0 3px #000, 0 0 3px #000;
+		color: darken(#E00, 8%);
 	}
 
-	.glyphicon, .fa {
-		font-size: 60px;
+	// Position stop near bottom of the page
+	&.footer { // Override #three_column_layout .footer
+		width: $width - 40px;
+		line-height: $footer_height;
+		padding: 10px 0;
+		margin: 20px;
+
+		// Position inner button in center of stop button
+		display: flex;
+		justify-content: center;
+		align-content: center;
 	}
 
-	#stop {
-		width: 100%;
-		border: 3px solid #800;
-		border-radius: 10px;
-		color: #800;
-		background-color: #E00;
-
-		& > span {
-			/* Outline the stop character to highlight it.
-			* We do this by putting a shadow on it, no offset and a small radius.
-			* One shadow isn't visible enough, counter this by doing a few of them.
-			* The black tints it black, doesn't apply a hard black colour.
-			*/
-			text-shadow: 0 0 3px #000, 0 0 3px #000, 0 0 3px #000
-		}
+	// Position stop icon inside center of inner button
+	span {
+		position: absolute;
+		left: 50%;
+		top: 50%;
+		transform: translate(-50%, -50%);
 	}
+
 }
 
 
@@ -333,22 +91,16 @@ iframe {
 }
 
 .btn-mw {
-	color: black;
-	border: thin solid black;
+	color: $text_color;
+	border: thin solid $text_color;
 	border-radius: 10px;
 }
 
-.qcook {
-	display: block;
-	margin: 50px 10px;
-	padding: 20px 0;
-	text-align: center;
-	height: 100px;
-	line-height: 60px; /* height-padding = 100-20-20 */
-}
-
-#time_data, #temp_data {
-	cursor: crosshair;
+.btn-round {
+	border-radius: 50%;
+	background: white;
+	border-color: $emphasis_color;
+	// Padding is adjusted by utilities.js:square_element() to ensure a perfect circle
 }
 
 
@@ -356,30 +108,23 @@ iframe {
 	cursor: pointer;
 }
 
-#power_triangle, #power_marker {
+#power_wrapper {
+	display: block;
+	margin: 0 auto;
+	text-align: center;
+
 	position: relative;
+
+	#power_triangle {
+		position: relative;
+		cursor: pointer;
+	}
+
+	#power_marker {
+		position: absolute;
+		top: -5px;
+		cursor: move;
+	}
+
 }
 
-#power_marker {
-	/* background: rgba(0,200,0,50); */
-	top: 5px;
-	cursor: move;
-}
-
-#power_triangle {
-	cursor: pointer;
-}
-
-// Genericish Utility classes
-.nav-stacked > li.spacer {
-	height: 50px;
-}
-
-.noselect {
-	-webkit-touch-callout: none;
-	-webkit-user-select: none;
-	-khtml-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	user-select: none;
-}

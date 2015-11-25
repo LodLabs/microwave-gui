@@ -1,187 +1,108 @@
-<!DOCTYPE html>
-<html lang="en">
-	<head>
-		<meta charset='utf-8'>
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<meta http-equiv="Content-Language" content="en">
-		<meta name="viewport" content="width=480">
+<script src="sly/sly-1.6.1.js"></script>
 
-		<title>Microwave Start page</title>
-
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
-		<script src="https://code.jquery.com/jquery-2.1.4.min.js" integrity="sha384-R4/ztc4ZlRqWjqIuvf6RX5yb/v90qNGx6fS48N0tRxiGkqveZETq72KgDVJCp2TC" crossorigin="anonymous"></script>
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" integrity="sha512-K1qjQ+NcF2TYO/eI3M6v8EiNYZfA95pQumfvcVrTHtwQVDG+aHRqLi/ETn2uB+1JqwYqVG3LIvdm9lj6imS/pQ==" crossorigin="anonymous"></script>
-
-		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
-
-		<script src="sly/sly-1.6.1.js"></script>
-
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
-
-		<link href="start.css" rel="stylesheet" type="text/css">
-
-	</head>
-	<body ng-app="qcook-app">
-		<!-- Microwave screen is 480x800 pixels -->
-		<div id="microwave_screen"><!-- Two containers required to enforce strict sizing -->
-		<div id="microwave_container">
-			<div id="left_nav_column" class="left_col">
-				<ul class="nav nav-pills nav-stacked" role="tablist">
-					<li role="presentation" class="active">
-						<a href="#favourites" class="btn btn-mw" aria-controls="favourites" role="tab" data-toggle="tab">
-							<span class="fa fa-star-o" aria-hidden="true"></span>
-							<span class="sr-only">Favourites</span>
+<div id="menu_layout">
+	<div class="left_col">
+		<ul class="nav nav-stacked" role="tablist">
+			<li role="presentation" class="active">
+				<a data-target="#favourites" aria-controls="favourites" role="tab" data-toggle="tab">
+					<span class="fa fa-star-o" aria-hidden="true"></span>
+					<span class="sr-only">Favourites</span>
+				</a>
+			</li>
+			<li role="presentation">
+				<a data-target="#alphabetical" aria-controls="alphabetical" role="tab" data-toggle="tab">
+					<span class="as-fa">A-Z</span>
+				</a>
+			</li>
+			<li class="spacer" aria-hidden="true"></li>
+			<li role="presentation">
+				<a data-target="#new" aria-controls="new" role="tab" data-toggle="tab">
+					<span class="fa fa-plus" aria-hidden="true"></span>
+					<span class="sr-only">New</span>
+				</a>
+			</li>
+			<li role="presentation">
+				<a data-target="#download" aria-controls="download" role="tab" data-toggle="tab">
+					<span class="fa fa-download" aria-hidden="true"></span>
+					<span class="sr-only">Download</span>
+				</a>
+			</li>
+			<li class="spacer" aria-hidden="true"></li>
+			<li role="presentation">
+				<a href="/">
+					<span class="fa fa-home" aria-hidden="true"></span>
+					<span class="sr-only">Home</span>
+				</a>
+			</li>
+		</ul>
+	</div>
+	<div class="center_col">
+		<h1>Recipies</h1>
+		<div class="tab-content">
+			<div role="tabpanel" class="tab-pane active" id="favourites">
+				<h2>Favourites</h2>
+				<ul class="btn-list">
+					<li ng-repeat="entry in index.entries | filter:{favourite:true}:true">
+						<a class="btn btn-default" ng-href="/recipie/{{entry.key}}">
+							<span class="title">{{entry.title}}</span>
 						</a>
 					</li>
-					<li role="presentation">
-						<a href="#alphabetical" class="btn btn-mw" aria-controls="alphabetical" role="tab" data-toggle="tab">A-Z</a>
-					</li>
-					<li class="spacer" aria-hidden="true"></li>
-					<li role="presentation"><a href="#new" class="btn btn-mw" aria-controls="new" role="tab" data-toggle="tab"><span class="fa fa-plus" aria-hidden="true"></span><span class="sr-only">New</span></a></li>
-					<li role="presentation"><a href="#download" class="btn btn-mw" aria-controls="download" role="tab" data-toggle="tab"><span class="fa fa-download" aria-hidden="true"></span><span class="sr-only">Download</span></a></li>
-					<li class="spacer" aria-hidden="true"></li>
-					<li role="presentation"><a class="btn btn-mw" href="start.html"><span class="fa fa-home" aria-hidden="true"></span><span class="sr-only">Home</span></a></li>
 				</ul>
 			</div>
-			<div id="center_column">
-				<h1>Quick cook</h1>
-				<div id="qcook_tabcontainer" class="tab-content">
-					<div role="tabpanel" class="tab-pane active" id="favourites" ng-controller="qcook">
-						<h2>Favourites</h2>
-						<ul>
-							<li ng-repeat="entry in entries | filter:{favourite:true}:true">
-								<a class="btn btn-default" ng-href="recipie_target.html?{{entry.key}}">
-									<span class="title">{{entry.title}}</span>
-								</a>
-							</li>
-						</ul>
+			<div role="tabpanel" class="tab-pane" id="alphabetical">
+				<div class="scrollbar">
+					<div class="handle">
+						<div class="mousearea"></div>
 					</div>
-					<div role="tabpanel" class="tab-pane" id="alphabetical" ng-controller="qcook">
-						<h2>Alphabetical</h2>
-						<div id="scroll_bg" class="noselect">
-							ABCDEFGHIJKLMNOPQRSTUVWXYZ
-						</div>
-						<div class="scrollbar">
-							<div class="handle">
-								<div class="mousearea"></div>
-							</div>
-						</div>
-						<div id="alphabetical_list" class="frame">
-						<ul class="slidee">
-							<li ng-repeat="entry in entries | orderBy:'title'">
-								<a class="btn btn-default" ng-href="recipie_target.html?{{entry.key}}">
-									<span class="title">{{entry.title}}</span>
-								</a>
-							</li>
-						</ul>
-						</div>
-					</div>
-					<div role="tabpanel" class="tab-pane" id="new">
-						<h2>New</h2>
-					</div>
-					<div role="tabpanel" class="tab-pane" id="download">
-						<h2>Download</h2>
+					<div class="bg">
+						ABCDEFGHIJKLMNOPQRSTUVWXYZ
 					</div>
 				</div>
+				<div class="frame">
+					<h2>Alphabetical</h2>
+					<ul class="btn-list slidee">
+						<li ng-repeat="entry in index.entries | orderBy:'title'">
+							<a class="btn btn-default" ng-href="/recipie/{{entry.key}}">
+								<span class="title">{{entry.title}}</span>
+							</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<div role="tabpanel" class="tab-pane" id="new">
+				<h2>New</h2>
+			</div>
+			<div role="tabpanel" class="tab-pane" id="download">
+				<h2>Download</h2>
 			</div>
 		</div>
-		</div>
+	</div>
 
-		<script>
-			$('.nav-tabs a').click(function(e) {
-				e.preventDefault();
-				$(this).tab('show');
-			});
-		</script>
-		<script>
-			var options = {
-				/* itemNav: 'basic', */
-				smart: 0,
-				activateOn: 'click',
-				mouseDragging: 1, // Click-dragging on frame
-				touchDragging: 1, // Touch-dragging on frame
-				releaseSwing: 1,
-				scrollBar: $('.scrollbar'),
-				scrollBy: 1,
-				dragHandle: 1, // Click-dragging on scrollbar handle
-				dynamicHandle: 0,
-			};
-			var frame = new Sly('#alphabetical_list', options).init();
+<script>
+$('.nav-tabs a').click(function(e) {
+	e.preventDefault();
+	$(this).tab('show');
+});
+</script>
+<script>
+var options = {
+	/* itemNav: 'basic', */
+	smart: 0,
+	activateOn: 'click',
+	mouseDragging: 1, // Click-dragging on frame
+	touchDragging: 1, // Touch-dragging on frame
+	releaseSwing: 1,
+	scrollBar: $('.scrollbar'),
+	scrollBy: 1,
+	dragHandle: 1, // Click-dragging on scrollbar handle
+	dynamicHandle: 0,
+};
+var frame = new Sly('#alphabetical .frame', options).init();
 
-			$('a[href="#alphabetical"]').on('shown.bs.tab', function(e) {
-				frame.reload();
-			});
-		</script>
-		<script>
-			var myApp = angular.module('qcook-app',[]);
-			myApp.controller('qcook', ['$scope', function($scope) {
-				$scope.entries = [
-					{
-						"title"       : "Self saucing pudding",
-						"key"         : "saucy",
-						"favourite"   : true,
-					},
-					{
-						"title"       : "Mug cake",
-						"key"         : "mug",
-						"favourite"   : true,
-					},
-					{
-						"title"       : "Lemonade cake",
-						"key"         : "bubbly",
-						"favourite"   : true,
-					},
-					{
-						"title"       : "Strawberry and Buckweat Breakfast Bowl",
-						"key"         : "gritts",
-						"favourite"   : false,
-					},
-					{
-						"title"       : "Crispy Bacon",
-						"key"         : "backon",
-						"favourite"   : false,
-					},
-					{
-						"title"       : "Vegan Blueberry Muffin",
-						"key"         : "mmm",
-						"favourite"   : false,
-					},
-					{
-						"title"       : "Mug Quiche",
-						"key"         : "mmm_twitchy",
-						"favourite"   : false,
-					},
-					{
-						"title"       : "Poached Eggs",
-						"key"         : "mmm_rises",
-						"favourite"   : false,
-					},
-					{
-						"title"       : "Sweet Potato and Parsnip Chips",
-						"key"         : "mmm_bits",
-						"favourite"   : false,
-					},
-					{
-						"title"       : "Mug Banana Bread",
-						"key"         : "mmm_flies",
-						"favourite"   : false,
-					},
-					{
-						"title"       : "Grain-Free English Muffin",
-						"key"         : "yuk",
-						"favourite"   : false,
-					},
-					{
-						"title"       : "Zebra",
-						"key"         : "stripy",
-						"favourite"   : false,
-					}
+$('a[href="#alphabetical"]').on('shown.bs.tab', function(e) {
+    frame.reload(); 
+});             
 
-				];
-				console.log($scope);
-			}]);
-		</script>
-	</body>
-</html>
+</script>
 
 

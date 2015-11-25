@@ -1,0 +1,41 @@
+.btn-list {
+	/* List of buttons, such as one touch cooking options */
+	display: flex;
+	flex-direction: column;
+	/* height: 678px; TODO: Need to set this for other lists, disable for A-Z */
+	padding: 0;
+
+	& > li {
+		display: block;
+
+		.btn {
+			border: thin solid;
+			padding: 10px;
+			width: 100%;
+			border-radius: 10px;
+			margin: 10px 0;
+		}
+		
+		a {
+			display: table;
+			table-layout: fixed;
+			overflow: hidden;
+			width: 100%;
+
+			& > span {
+				display: table-cell;
+				text-overflow: ellipsis;
+				overflow: hidden;
+			}
+		}
+
+		.title {
+			text-align: left;
+		}
+		.score {
+			text-align: right;
+			width: 60px;
+		}
+	}
+}
+

@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="microwave-app" ng-strict-di>
+	<head>
+		<meta charset='utf-8'>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta http-equiv="Content-Language" content="en">
+		<meta name="viewport" content="width=480">
+
+		<title>Microwave</title>
+
+		<link rel="stylesheet" type="text/css" href="/3rdparty/bootstrap/3.3.6/css/bootstrap.min.css">
+		<link rel="stylesheet" type="text/css" href="/3rdparty/font-awesome/4.5.0/css/font-awesome.min.css">
+		<link rel="stylesheet" type="text/css" href="/start.css">
+
+		<script src="/3rdparty/jquery/2.1.4/jquery.min.js"></script>
+		<script src="/3rdparty/bootstrap/3.3.6/js/bootstrap.js"></script>
+		<script src="/3rdparty/angularjs/1.4.5/angular.js"></script>
+		<script src="/3rdparty/angularjs/1.4.5/angular-route.js"></script>
+
+		<base href="/">
+	</head>
+
+	<body>
+		<!-- Microwave screen is 480x800 pixels -->
+		<div id="microwave_screen"><!-- Two containers required to enforce strict sizing -->
+			<ng-view id="microwave_container"></ng-view>
+		</div>
+
+		<script>
+			"use strict";
+
+			var myApp = angular.module('microwave-app',['ngRoute']);
+
+			myApp.config(['$routeProvider', '$locationProvider',
+					function($routeProvider, $locationProvider) {
+						$routeProvider
+							.when('/', {
+								templateUrl:  'start.html',
+								controller:   'start_ctrl',
+								controllerAs: 'ctrl',
+							})
+							.when('/time/:seconds', {
+								templateUrl:  'time_based.html',
+								controller:   'time_ctrl',
+								controllerAs: 'time',
+							})
+							.when('/time/', {
+								templateUrl:  'time_based.html',
+								controller:   'time_ctrl',
+								controllerAs: 'time',
+							})
+							.when('/qcook/', {
+								templateUrl:  'qcook.html',
+								controller:   'qcook_index_ctrl',
+								controllerAs: 'index',
+							})
+							.when('/qcook/:target', {
+								templateUrl:  'qcook_target.html',
+								controller:   'qcook_script_ctrl',
+								controllerAs: 'script',
+							})
+							.when('/recipie/', {
+								templateUrl:  'recipies.html',
+								controller:   'recipies_index_ctrl',
+								controllerAs: 'index',
+							})
+							.when('/recipie/:target', {
+								templateUrl:  'recipie_target.html',
+								controller:   'recipies_script_ctrl',
+								controllerAs: 'script',
+							})
+							.when('/settings/', {
+								templateUrl:  'settings.html',
+								controller:   'dummy_ctrl',
+								controllerAs: 'ctrl',
+							})
+							.when('/temperature/:degrees', {
+								templateUrl:  'temperature_based.html',
+								controller:   'temperature_ctrl',
+								controllerAs: 'ctrl',
+							})
+							.when('/temperature/', {
+								templateUrl:  'temperature_based.html',
+								controller:   'temperature_ctrl',
+								controllerAs: 'ctrl',
+							});
+
+						$locationProvider.html5Mode(true);
+					}
+			]);
+
+			myApp.controller('start_ctrl', ['$scope', '$http', '$timeout', 'microwave', function($scope, $http, $timeout, microwave) {
+				var vm = this;
+
+				this.qcook_entries = [];
+				this.temperature_color = temperature_color; // Allow access from expressions
+
+				$http.get('/qcook.json').then(function(res) {
+					vm.qcook_entries = res.data;
+				});
+
+				// Want to adjust the circularness of the buttons after updating
+				// Need to do this after the DOM is updated
+				// Angular doesn't provide ordering
+				$scope.$watch("qcook_entries", function(newval, oldval) {
+					// Delay to run after the digest cycles
+					// NOTE: Runs once when $watch is initialised
+					// TODO: Can I do this with ng-style?
+					$timeout(function(){
+						$('.btn-round').each(function(index, elem) { square_element(elem); });
+					},0,false);
+				})
+
+				$scope.$watch(angular.bind(this, function() {
+					return microwave.state;
+				}), function (new_val, old_val) {
+					console.log("State changed", old_val, "->", new_val);
+					if (new_val == "temperature") {
+						window.location.href = '/temperature/';
+					} else if (new_val == "time") {
+						window.location.href = '/time/';
+					}
+				});
+
+			}]);
+
+			myApp.controller('qcook_index_ctrl', ['$http', function($http) {
+				var vm = this;
+				this.entries = [];
+
+				$http.get('/qcook.json').then(function(res) {
+					vm.entries = res.data;
+				});
+			}]);
+
+			myApp.controller('recipies_index_ctrl', ['$http', function($http) {
+				var vm = this;
+				this.entries = [];
+
+				$http.get('/recipies.json').then(function(res) {
+					vm.entries = res.data;
+				});
+			}]);
+
+
+			myApp.controller('qcook_script_ctrl', ['$http', '$routeParams', function($http, $routeParams) {
+				var vm = this;
+
+				this.scripts = [];
+				this.details = {};
+				this.default = {
+					"title" : "One touch cooking",
+					"description" : "One touch quick options for your common cooking needs.",
+					"steps" : [
+						"Push a button",
+						"???",
+						"EAT!"
+					]
+				};
+
+				$http.get('/qcook.json').then(function(res) {
+					// JSON should really be a hash, but it makes the handling much harder
+					// The cost of searching should be minor, and the final implementation
+					// Will probably include severside filtering
+					vm.scripts = res.data;
+
+					vm.details = vm.default;
+
+					// Search for the key entry
+					angular.forEach(vm.scripts, function(entry) {
+						if(entry.key == $routeParams.target)
+							vm.details = entry;
+					});
+				});
+
+
+			}]);
+
+			myApp.controller('recipies_script_ctrl', ['$http', '$routeParams', function($http, $routeParams) {
+				var vm = this;
+
+				this.scripts = [];
+				this.details = {};
+				this.default = {
+					"title" : "One touch cooking",
+					"description" : "One touch quick options for your common cooking needs.",
+					"steps" : [
+						"Push a button",
+						"???",
+						"EAT!"
+					]
+				};
+
+				$http.get('/recipies.json').then(function(res) {
+					// JSON should really be a hash, but it makes the handling much harder
+					// The cost of searching should be minor, and the final implementation
+					// Will probably include severside filtering
+					vm.scripts = res.data;
+
+					vm.details = vm.default;
+
+					// Search for the key entry
+					angular.forEach(vm.scripts, function(entry) {
+						if(entry.key == $routeParams.target)
+							vm.details = entry;
+					});
+				});
+
+			}]);
+			myApp.controller('dummy_ctrl', [function() {}]);
+
+			myApp.controller('temperature_ctrl', ['$routeParams', 'microwave', '$scope', function($routeParams, microwave, $scope) {
+				var vm = this;
+				this.microwave = microwave;
+
+				if ("degrees" in $routeParams) {
+					// If we start with degrees we are in control, kick off the process
+					// If we start without degrees we are just an observer
+					var degrees = parseInt($routeParams.degrees, 10);
+					microwave.set_power(100);
+					microwave.start_temperature(degrees);
+				}
+
+				temp_dial();
+				draw_power_bg( document.getElementById("power_triangle") );
+				draw_fixed_power_marker( document.getElementById("power_marker") );
+
+				$scope.$watch(angular.bind(this, function() {
+					return this.microwave.temperature;
+				}), function (new_val) {
+					$("#temp_dial").val(new_val).trigger('change');
+				});
+
+				$scope.$watch(angular.bind(this, function() {
+					return this.microwave.target_temperature;
+				}), function (new_val) {
+					$("#temp_target_dial").val(new_val).trigger('change');
+				});
+
+				$scope.$watch(angular.bind(this, function() {
+					return document.getElementById("power_pcnt").innerHTML;
+				}), function (new_val) {
+					console.log("Power changed - Client", new_val, microwave.power);
+					if (new_val != microwave.power) {
+						microwave.set_power(new_val);
+					}
+				});
+
+				$scope.$watch(angular.bind(this, function() {
+					return this.microwave.power;
+				}), function (new_val, old_val) {
+					console.log("Power changed - Serverside", new_val, old_val);
+					set_power_marker(new_val);
+				});
+
+				$scope.$watch(angular.bind(this, function() {
+					return this.microwave.state;
+				}), function (new_val, old_val) {
+					console.log("State changed", old_val, "->", new_val);
+					if (old_val == "temperature" && new_val == "stopped") {
+						// Was running, now not
+						window.location.href = '/';
+					}
+				});
+
+				$("#temp_target_dial").trigger('configure', {"release": function(value) {
+					console.log("Release", value);
+					// TODO: Angular like this is aweful, release also trigger by angular setting value
+					if (microwave.target_temperature != value)
+						microwave.set_target_temperature(value);
+				}});
+
+			}]);
+
+			myApp.controller('time_ctrl', ['$routeParams', 'microwave', '$scope', function($routeParams, microwave, $scope) {
+				var vm = this;
+				this.microwave = microwave;
+
+				if ("seconds" in $routeParams) {
+					// If we start with seconds we are in control, kick off the process
+					// If we start without seconds we are just an observer
+					var seconds = parseInt($routeParams.seconds, 10);
+					microwave.set_power(100);
+					microwave.start_time(seconds);
+				}
+
+
+				// time_dial($("#time_dial"), this.seconds);
+				time_dial($("#time_dial"), 0);
+
+				draw_power_bg( document.getElementById("power_triangle") );
+				draw_fixed_power_marker( document.getElementById("power_marker") );
+
+				$scope.$watch(angular.bind(this, function() {
+					return this.microwave.time_remaining;
+				}), function (new_val) {
+					$("#time_dial").trigger('configure', {"remaining":new_val, "max":microwave.time});
+				});
+
+				$scope.$watch(angular.bind(this, function() {
+					return this.microwave.state;
+				}), function (new_val, old_val) {
+					console.log("State changed", new_val, old_val);
+					if (old_val == "time" && new_val == "stopped") {
+						// Was running, now not
+						window.location.href = '/'
+					}
+				});
+
+				$scope.$watch(angular.bind(this, function() {
+					return document.getElementById("power_pcnt").innerHTML;
+				}), function (new_val) {
+					console.log("Power changed - Client", new_val, microwave.power);
+					if (new_val != microwave.power) {
+						microwave.set_power(new_val);
+					}
+				});
+
+				$scope.$watch(angular.bind(this, function() {
+					return this.microwave.power;
+				}), function (new_val, old_val) {
+					console.log("Power changed - Serverside", new_val, old_val);
+					set_power_marker(new_val);
+				});
+
+				$("#time_dial").trigger('configure', {"release": function(value) {
+					// Value is number of points from maximum
+					// TODO: Allow time to be increased
+					var remaining = microwave.time - Math.round(value);
+					microwave.start_time(remaining);
+				}});
+
+			}]);
+
+			myApp.factory("microwave", ['$q', '$timeout', '$rootScope', function ($q, $timeout, $rootScope) {
+				var status = {
+					"temperature"        : 25.5,
+					"power"              : 100,
+					"state"              : "disconnected",
+					"time"               : 10.0,
+					"time_remaining"     : null,
+					"target_temperature" : 80
+				};
+
+				var ws = new WebSocket("ws://"+window.location.host+"/control");
+				var transmit_queue = [];
+
+				ws.onopen = function(e) {
+					console.log("WS OPEN");
+
+					// Empty out the queue
+					while(transmit_queue.length) {
+						ws.send(transmit_queue.pop());
+					}
+				};
+				ws.onmessage = function(e) {
+					console.log("IN", e.data);
+					// Notify controllers of changes
+					$rootScope.$apply(function() {
+						// Copy contents, assigning to status doesn't update the returned object
+						Object.assign(status, JSON.parse(e.data));
+					});
+				};
+				ws.upload = function(obj) {
+					console.log("UPLOAD", ws.readyState, ws);
+					// Wrap send function
+					if (ws.readyState == ws.OPEN) {
+						console.log("SENDING", obj);
+						ws.send(JSON.stringify(obj));
+					} else {
+						transmit_queue.push(JSON.stringify(obj));
+					}
+				};
+
+				// TODO: Handle disconnections
+
+				// TODO: Handle pushes
+				// Can't track changes to the status object, $rootScope.$watch doesn't
+				// seem to do it for me. Use direct functions for now.
+
+				status.set_power = function (power) {
+					console.log("SETTING POWER", power);
+					ws.upload({"power" : power});
+				};
+
+				status.start_time = function (time_s) {
+					console.log("STARTING WITH TIME", time_s);
+					ws.upload({"state" : "time", "time" : time_s});
+				};
+
+				status.start_temperature = function (temperature) {
+					console.log("STARTING WITH TEMPERATURE", temperature);
+					ws.upload({"state" : "temperature", "target_temperature" : temperature});
+				};
+
+				status.adjust_time = function (diff_s) {
+					var time = status.time + diff_s;
+					console.log("SETTING TIME", time);
+					ws.upload({"time": time});
+				};
+
+				status.set_time_remaining = function (time) {
+					ws.upload({"time": time});
+				};
+
+				status.set_target_temperature = function (temperature) {
+					ws.upload({"target_temperature": temperature});
+				};
+
+				status.stop = function() {
+					ws.upload({"state" : "stopped"});
+				}
+
+				$rootScope.$watch(status, function(new_val, old_val) {
+					console.log("TAWCH Service", new_val, old_val);
+				}, true);
+
+				return status;
+			}]);
+
+
+			
+
+
+
+		</script>
+		<script src="/utilities.js"></script>
+	</body>
+</html>

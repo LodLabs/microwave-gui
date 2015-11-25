@@ -19,6 +19,20 @@
 
     }
 
+	// TODO: Auto-reconnect
+	function openWS() {
+		var ws = new WebSocket("ws://"+window.location.host+"/thermal_image");
+		ws.onmessage = function(e) {
+			// New data will come through roughly once a second
+			var data = JSON.parse(e.data);
+			process_image(data);
+		};
+		ws.onclose = function(e) {
+			openWS()
+		};
+	}
+
+
     var resp_grid;
     function process_image(grid) {
       resp_grid = grid;
@@ -30,7 +44,7 @@
 	function iron_palette(point, min, max) {
 		// Based on values from http://stackoverflow.com/a/30066513/2438650
 		var iron_rainbow = new Rainbow();
-		iron_rainbow.setSpectrum("white", "gold", "#cc0077", "#20008c", "black");
+		iron_rainbow.setSpectrum("black", "#20008c", "#cc0077", "gold", "white");
 		iron_rainbow.setNumberRange(parseFloat(min), parseFloat(max));
 		return '#'+iron_rainbow.colourAt(point);
 	}
@@ -53,8 +67,10 @@
 		var bw = canvas.width/8;
 		var bh = canvas.height/8;
 
+		/*
 		console.log("Size", canvas.width, canvas.height, bw, bh);
 		console.log("Size2", window.innerHeight, window.innerWidth);
+		*/
 
         // Data is an 8x8 grid - show it
         // TODO: Is not actually an even grid
@@ -72,11 +88,10 @@
           }
         }
 
-		console.log("Max", max, "Min", min);
-
         for (var i=0; i<8; i++) {
           for (var j=0; j<8; j++) {
-            ctx.fillStyle = palette(resp_grid[i][j], min, max);
+            // ctx.fillStyle = palette(resp_grid[i][j], min, max);
+            ctx.fillStyle = palette(resp_grid[i][j], 20, 100);
             ctx.fillRect(j*bw,i*bh,bw,bh);
 		  	// console.log(i,j,resp_grid[i][j],ctx.fillStyle);
           }
@@ -100,7 +115,7 @@
    canvas { display: block; width: 100vw; height=100vh }
   </style>
  </head>
- <body onload="load();">
+ <body onload="openWS();">
    <canvas id="canvas"></canvas>
  </body>
 </html>

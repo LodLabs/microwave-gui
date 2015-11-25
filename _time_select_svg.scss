@@ -1,0 +1,20 @@
+// CSS fragment for start page time selection SVG
+
+#time_data_gradient_fg {
+	stop-color: $primary_color;
+}
+
+#time_data_gradient_bg {
+	stop-color: white;
+	stop-opacity: 0;
+}
+
+#time_data_line {
+	stroke: $primary_color;
+	fill: transparent;
+}
+
+#time_data_labels text {
+	font-size: 4px; // Scaled up 7x before display
+	fill: $text_color; // Sets the text color
+}

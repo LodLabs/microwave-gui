@@ -1,0 +1,161 @@
+// Overall layout styling
+
+// Main page div wrapper sets up our virtual screen
+#microwave_screen {
+	// Double-div required to prevent width creep, paired with #microwave_container
+	width: $width;
+	max-width: $width;
+	margin: 0 auto; // Center container
+	overflow: hidden;
+}
+
+#microwave_container {
+	// Prevents width creep by contained elements
+	display: block;
+	width: $width;
+	height: $height;
+	margin: 0 auto;
+}
+
+// On the screen we can have a number of different layout structures
+// 1. An uneven three column layout
+// 2. A menu/tab layout
+// 3. A fullscreen layout
+
+%layout_parent {
+	position: relative; // Allow absolute positioning of children
+	width: $width;
+	height: $height;
+}
+
+%layout_child {
+	display: block;
+	height: 100%;
+	vertical-align: top;
+	position: absolute;
+}
+
+#three_column_layout {
+	/* Small left column
+	 * Small right column
+	 * Bulk of content in center
+	 * Footer - across all three
+	 */
+	@extend %layout_parent;
+
+	%three_column_child {
+		@extend %layout_child;
+		height: $height - $footer_height;
+
+		// Allow easier layout of children
+		display: flex;
+		flex-direction: column;
+	}
+
+	.left_col {
+		@extend %three_column_child;
+		left: 0;
+		width: $col_width;
+	}
+
+	.right_col {
+		@extend %three_column_child;
+		right: 0;
+		width: $col_width;
+	}
+
+	.center_col {
+		@extend %three_column_child;
+		left: $col_width;
+		width: $width - $col_width - $col_width;
+	}
+
+	.footer {
+		@extend %layout_child;
+		left: 0;
+		bottom: 0;
+		width: 100%;
+		height: $footer_height;
+	}
+}
+
+#menu_layout {
+	/* A two column layout
+	 * The left column is a menu with a list of category links as tabs
+	 * The main column is the body, different pages selected by the category links
+	 *
+	 * This layout uses bootstrap classes for styling and structure
+	 */
+
+	@extend %layout_parent;
+
+	.left_col {
+		@extend %layout_child;
+
+		left: 0;
+		width: $col_width;
+		height: $height;
+		
+		.nav {
+			margin-top: 60px;
+
+			li {
+				margin: 0;
+			}
+		}
+	}
+
+	.center_col {
+		@extend %layout_child;
+
+		left: $col_width;
+		width: $width - $col_width;
+		height: $height;
+
+
+	}
+}
+
+#full_screen_layout {
+	@extend %layout_parent;
+	.center_col {
+		@extend %layout_child;
+		overflow-y: scroll;
+		max-height: $height;
+	}
+}
+
+#full_screen_with_footer_layout {
+	@extend #full_screen_layout;
+
+	.center_col {
+		max-height: $height - $footer_height;
+	}
+
+	.footer {
+		@extend %layout_child;
+		left: 0;
+		bottom: 0;
+		width: 100%;
+		height: $footer_height;
+	}
+	#stop.footer {
+		// TODO: Doesnt' belong here
+		// TODO: Zero margin looks bad :(
+		margin: 0 20px;
+	}
+
+}
+
+
+// Some inner element layout options
+.btn-container {
+	display: table;
+	table-layout: fixed;
+	border-spacing: 5px;
+	margin: 0 auto;
+
+	& > a {
+		display: table-cell;
+	}
+}

@@ -1,0 +1,63 @@
+[
+	{
+		"title"       : "Self saucing pudding",
+		"key"         : "saucy",
+		"favourite"   : true
+	},
+	{
+		"title"       : "Mug cake",
+		"key"         : "mug",
+		"favourite"   : true
+	},
+	{
+		"title"       : "Lemonade cake",
+		"key"         : "bubbly",
+		"favourite"   : true
+	},
+	{
+		"title"       : "Strawberry and Buckweat Breakfast Bowl",
+		"key"         : "gritts",
+		"favourite"   : false
+	},
+	{
+		"title"       : "Crispy Bacon",
+		"key"         : "backon",
+		"favourite"   : false
+	},
+	{
+		"title"       : "Vegan Blueberry Muffin",
+		"key"         : "mmm",
+		"favourite"   : false
+	},
+	{
+		"title"       : "Mug Quiche",
+		"key"         : "mmm_twitchy",
+		"favourite"   : false
+	},
+	{
+		"title"       : "Poached Eggs",
+		"key"         : "mmm_rises",
+		"favourite"   : false
+	},
+	{
+		"title"       : "Sweet Potato and Parsnip Chips",
+		"key"         : "mmm_bits",
+		"favourite"   : false
+	},
+	{
+		"title"       : "Mug Banana Bread",
+		"key"         : "mmm_flies",
+		"favourite"   : false
+	},
+	{
+		"title"       : "Grain-Free English Muffin",
+		"key"         : "yuk",
+		"favourite"   : false
+	},
+	{
+		"title"       : "Zebra",
+		"key"         : "stripy",
+		"favourite"   : false
+	}
+]
+

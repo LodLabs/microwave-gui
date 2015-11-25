@@ -1,80 +1,99 @@
-<!DOCTYPE html>
-<html lang="en">
-	<head>
-		<meta charset='utf-8'>
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<meta http-equiv="Content-Language" content="en">
-		<meta name="viewport" content="width=480">
+<script src="3rdparty/jQuery-Knob/1.2.12/js/jquery.knob.js"></script>
+<div id="three_column_layout">
+	<div class="center_col">
+		<div id="thermal_image">
+			<iframe src="/grideye/snapshot.html" style="overflow: hidden" seamless="seamless" scrolling="no" style="width: 100%"></iframe>
+			<script>
+				// There are silly CSS games that can be played
+				// This is cleaner and sets sizing properly for inside the iframe
+				var iframe = $('#thermal_image iframe');
+				iframe.on('load', function() {
+					iframe.css({'height':iframe.width()+'px'});
+				});
+			</script>
+		</div>
+		<!--
+		<div style="font-size: 16px">
+			<p>
+			Need to do some serious thinking about how to handle the temperature based stuff.
+			</p>
+			<p>Desired features:</p>
+			<ul>
+				<li>Select an area of the temperature sensor to monitor</li>
+				<li>Get temperature of specific points</li>
+				<li>Plot temperature change across time</li>
+				<li>Get current min/max, recent min/max, distant min/max in defined area</li>
+				<li>Change desired temperature goal</li>
+				<li>Express temperature target as a range, between X and Y</li>
+				<li>Need to control temperature no more than X...</li>
+				<li>Provide time estimate</li>
+			</ul>
+		</div>
+		-->
 
-		<title>Microwave time page</title>
-
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
-		<script src="https://code.jquery.com/jquery-2.1.4.min.js" integrity="sha384-R4/ztc4ZlRqWjqIuvf6RX5yb/v90qNGx6fS48N0tRxiGkqveZETq72KgDVJCp2TC" crossorigin="anonymous"></script>
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" integrity="sha512-K1qjQ+NcF2TYO/eI3M6v8EiNYZfA95pQumfvcVrTHtwQVDG+aHRqLi/ETn2uB+1JqwYqVG3LIvdm9lj6imS/pQ==" crossorigin="anonymous"></script>
-
-		<link href="start.css" rel="stylesheet" type="text/css">
-
-		<script src="jQuery-Knob/js/jquery.knob.js"></script>
-	</head>
-	<body>
-		<div id="microwave_container">
-			<div class="left_col"></div>
-			<div id="center_column">
-				<div id="thermal_image">
-					<iframe src="grideye/snapshot.html" style="overflow: hidden" seamless="seamless" scrolling="no" style="width: 100%"></iframe>
-					<script>
-						// There are silly CSS games that can be played
-						// This is cleaner and sets sizing properly for inside the iframe
-						$(function() {
-							var iframe = $('#thermal_image iframe');
-							iframe.css({'height':iframe.width()+'px'});
-						});
-					</script>
-				</div>
-				<div style="font-size: 16px">
-					<p>
-					Need to do some serious thinking about how to handle the temperature based stuff.
-					</p>
-					<p>Desired features:</p>
-					<ul>
-						<li>Select an area of the temperature sensor to monitor</li>
-						<li>Get temperature of specific points</li>
-						<li>Plot temperature change across time</li>
-						<li>Get current min/max, recent min/max, distant min/max in defined area</li>
-						<li>Change desired temperature goal</li>
-						<li>Express temperature target as a range, between X and Y</li>
-						<li>Need to control temperature no more than X...</li>
-						<li>Provide time estimate</li>
-					</ul>
-				</div>
-				<div id="extras">
-					<a href="start.html" id="stop" type="button" class="btn btn-default" aria-label="Stop">
-						<span class="glyphicon glyphicon-stop" aria-hidden="true"></span>
-					</a>
+		<div id="temp_details" style="margin: 30px 0; height: 350px; width: 100%; display: table">
+			<div style="display: table-row; text-align: center">
+				<div style="position:relative; height:200px">
+				<input id="temp_dial"
+					data-displayInput=false
+		   			data-thickness="0.45"
+					data-angleOffset=-125
+					data-angleArc=250
+	 				data-width=200
+	 				data-height=200
+					data-fgColor="#FF0000"
+					data-bgColor="#CAA">
+				<input id="temp_target_dial" style="position: absolute"
+		   			data-thickness="0.3"
+					data-angleOffset=-125
+	 				data-width=200
+	 				data-height=200
+					data-angleArc=250
+					data-fgColor="#8B0000"
+					data-bgColor="#977">
+				</input>
 				</div>
 			</div>
-			<div class="right_col"></div>
+			<div id="power_wrapper">
+				<canvas id="power_triangle" width="250px" height="60px"></canvas>
+				<canvas id="power_marker" draggable="true" width="15px" height="70px"></canvas>
+				<div><span>Power</span> <span id="power_pcnt">80</span>% (<span id="power_watts">900</span>W)</div>
+			</div>
 		</div>
+	</div>
 
-		<script src="draw_power_triangle.js"></script>
-		<script>
-			// Based on http://stackoverflow.com/a/2880929/2438650
-			var urlParams = function () {
-				var match,
-					pl     = /\+/g,  // Regex for replacing addition symbol with a space
-					search = /([^&=]+)=?([^&]*)/g,
-					decode = function (s) { return decodeURIComponent(s.replace(pl, " ")); },
-					query  = window.location.search.substring(1);
+	<a ng-click="ctrl.microwave.stop()" id="stop" type="button" class="btn btn-default footer" aria-label="Stop">
+		<div class="btn btn-default btn-round" type="button">
+			<span class="fa fa-stop" aria-hidden="true"></span>
+		</div>
+	</a>
 
-				var urlParams = {};
-				while (match = search.exec(query))
-				urlParams[decode(match[1])] = decode(match[2]);
-				return urlParams;
-			}();
+</div>
 
-			draw_power_bg( document.getElementById("power_triangle") );
-			draw_fixed_power_marker( document.getElementById("power_marker") );
-			set_power_marker(100);
-		</script>
-	</body>
-</html>
+<script>
+$('.btn-round').each(function(index, elem) { square_element(elem); });
+</script>
+
+<script>
+/* Dial worky worky */
+function temp_dial() {
+	$("#temp_dial").knob({
+		'min' : 30,
+		'max' : 150,
+		'readOnly' : true,
+	});
+
+	$("#temp_target_dial").knob({
+		'min' : 30,
+		'max' : 150,
+		'format' : function(v) { return v + "°" },
+	});
+
+	// Parent div is generated, have to set css after knob call
+	// TODO: Should horizontally center better than a fixed left value
+	$("#temp_dial").parent("div").css({"position":"absolute", "left":"25px", "top":"0"});
+	$("#temp_target_dial").parent("div").css({"position":"absolute", "left":"25px", "top":"0"});
+}
+
+</script>
+<script src="draw_power_triangle.js"></script>

@@ -1,0 +1,92 @@
+[
+	{
+		"title"       : "Feed me a stray cat",
+		"key"         : "feed",
+		"score"       : 23,
+		"favourite"   : true
+	},
+	{
+		"title"       : "Boil liquid - 100°",
+		"short_line1" : "100°",
+		"short_line2" : "Boil",
+		"key"         : "boil",
+		"score"       : 51,
+		"description" : "Heats the liquid to boiling point and holds it there.",
+		"temp_color"  : 100,
+		"steps" : [
+			"Heat to 100°",
+			"Sound chime",
+			"Hold temperature between 90° and 100°"
+		],
+		"favourite"   : false
+	},
+	{
+		"title"       : "Defrost",
+		"key"         : "defrost",
+		"score"       : 42,
+		"favourite"   : false
+	},
+	{
+		"title"       : "Heat liquid - 80°",
+		"short_line1" : "80°",
+		"short_line2" : "Heat",
+		"key"         : "heat",
+		"score"       : 51,
+		"description" : "Heats the liquid and holds it there.",
+		"temp_color"  : 80,
+		"steps" : [
+			"Heat to 80°",
+			"Sound chime",
+			"Hold temperature between 75° and 80°"
+		],
+		"favourite"   : false
+	},
+	{
+		"title"       : "Popcorn",
+		"key"         : "popcorn",
+		"score"       : 12,
+		"favourite"   : false
+	},
+	{
+		"title"       : "Moose",
+		"key"         : "mmm",
+		"score"       : 12,
+		"favourite"   : false
+	},
+	{
+		"title"       : "Moose jerky",
+		"key"         : "mmm_twitchy",
+		"score"       : 12,
+		"favourite"   : false
+	},
+	{
+		"title"       : "Moose souflet",
+		"key"         : "mmm_rises",
+		"score"       : 12,
+		"favourite"   : false
+	},
+	{
+		"title"       : "Moose soup",
+		"key"         : "mmm_bits",
+		"score"       : 12,
+		"favourite"   : false
+	},
+	{
+		"title"       : "Moose tail",
+		"key"         : "mmm_flies",
+		"score"       : 12,
+		"favourite"   : false
+	},
+	{
+		"title"       : "Yak",
+		"key"         : "yuk",
+		"score"       : 12,
+		"favourite"   : false
+	},
+	{
+		"title"       : "Zebra",
+		"key"         : "stripy",
+		"score"       : 12,
+		"favourite"   : false
+	}
+]

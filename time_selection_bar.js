@@ -1,45 +1,28 @@
 // TODO: Clean up namespace
 var bg_colour = "#AAF";   // Light blue
-var line_colour = "#88F"; // Less light blue
+var line_colour = "#B47570"; // Less light blue
 var max_val = 1200; // 20 min
-
-var canvas = document.getElementById("time_data");
-
-function time_bg_fill_pattern () {
-	// Fill with diagonal blue lines
-
-	var pattern = document.createElement("canvas");
-	pattern.width = 5;
-	pattern.height = 10;
-	var ctx_pat = pattern.getContext("2d");
-
-	ctx_pat.beginPath();
-	ctx_pat.moveTo(0,0);
-	ctx_pat.lineTo(pattern.width,pattern.height);
-	ctx_pat.lineWidth = 1;
-	ctx_pat.strokeStyle = bg_colour;
-	ctx_pat.stroke();
-
-	// Need to fill in the empty corners so the stripes don't look disconnected
-	ctx_pat.strokeRect(0,pattern.height-0.1,0.1,pattern.height);
-	ctx_pat.strokeRect(pattern.width-0.1,0,pattern.width,0.1);
-
-	return pattern;
-}
 
 function draw_time_bg () {
 	var canvas = document.getElementById("time_data");
+	canvas.width = 120;
 	var ctx = canvas.getContext("2d");
+
+	var curve_end = 70;
 
 	// Fill under the curve
 	ctx.beginPath();
 	ctx.moveTo(0,2);
-	ctx.quadraticCurveTo(canvas.width*0.8, canvas.height*0.03, canvas.width, canvas.height);
-	ctx.lineTo(canvas.width, 2);
+	ctx.quadraticCurveTo(curve_end*0.8, canvas.height*0.03, curve_end, canvas.height);
+	ctx.lineTo(curve_end, 2);
 	ctx.lineTo(0,2);
 	ctx.closePath();
 
-	ctx.fillStyle = ctx.createPattern(time_bg_fill_pattern(), "repeat");
+	var gradient = ctx.createLinearGradient(0,0,curve_end,0);
+	gradient.addColorStop(0, line_colour);
+	gradient.addColorStop(1, "white");
+	ctx.fillStyle = gradient;
+	
 	ctx.fill();
 
 	// Light line to close it off
@@ -49,7 +32,7 @@ function draw_time_bg () {
 
 	ctx.beginPath();
 	ctx.moveTo(0,2);
-	ctx.quadraticCurveTo(canvas.width*0.8, canvas.height*0.03, canvas.width, canvas.height);
+	ctx.quadraticCurveTo(curve_end*0.8, canvas.height*0.03, curve_end, canvas.height);
 
 	// Draw the curve
 	ctx.lineWidth = 2;
@@ -93,11 +76,13 @@ function m2v(m) {
 
 function val2y (v) {
 	// Scale, 1sec - 1hr
-	return (1-v2m(v)/v2m(max_val))*canvas.offsetHeight;
+	var svg = document.getElementById("time_data");
+	return (1-v2m(v)/v2m(max_val))*svg.getBoundingClientRect().height;
 }
 
 function y2val (y) {
-	var m = (1-y/canvas.offsetHeight)*v2m(max_val);
+	var svg = document.getElementById("time_data");
+	var m = (1-y/svg.getBoundingClientRect().height)*v2m(max_val);
 	var raw_val = m2v(m);
 
 	// To make people happy, we want to bias towards pretty numbers
@@ -115,19 +100,26 @@ function y2val (y) {
 	}
 }
 
-function time_label (v, label) {
-	var canvas = document.getElementById("time_data");
-	var ctx = canvas.getContext("2d");
+function time_label(v, label) {
+	var y = (1-v2m(v)/v2m(max_val))*100;
 
-	var y = val2y(v);
+	// Need to undo the viewport scaling, to prevent text distortion
+	// Viewport is 200x100
+	var hs = $('#time_data_labels').parents('svg').height()/100;
+	var ws = $('#time_data_labels').parents('svg').width()/200;
+	var newText = document.createElementNS("http://www.w3.org/2000/svg","text");
 
-	ctx.font = "20px sans-serif";
-	ctx.fillStyle = "black";
-	ctx.textAlign = "right";
-	ctx.fillText(label, canvas.offsetWidth-5, y+10); // +10 vertically centers text
+	newText.setAttributeNS(null,"text-anchor","end");
+	newText.setAttributeNS(null,"x",100/hs); // Because of right/end align
+	newText.setAttributeNS(null,"y",y/ws); // Unsure why this is scaled by width...
+
+	newText.setAttributeNS(null,"transform","scale("+hs+","+ws+")"); 
+
+	var textNode = document.createTextNode(label);
+	newText.appendChild(textNode);
+	document.getElementById("time_data_labels").appendChild(newText);
 }
 
-draw_time_bg();
 
 time_label(10,    "10 sec");
 time_label(30,    "30 sec");
@@ -135,13 +127,13 @@ time_label(60,    "1 min");
 time_label(5*60,  "5 min");
 time_label(10*60, "10 min");
 
-canvas.addEventListener('click', function(event) {
+document.getElementById("time_data").addEventListener('click', function(event) {
 	if (event.button) return; // Not left-button, ignore
 
-	var y = event.pageY - canvas.offsetTop; // Get local coordinates
+	var y = event.pageY - this.getBoundingClientRect().y; // Get local coordinates
 	var v = y2val(y);
-	console.log("Click", y,v,v/60);
+	console.log("Click", y, v, v/60);
 
-	window.location.href = 'time_based.html?time='+v;
+	window.location.href = '/time/'+v;
 });
 

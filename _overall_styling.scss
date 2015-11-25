@@ -1,0 +1,84 @@
+// Styling for the major elements
+// Such as the layouts defined in _layout.scss
+// Most of the common multi-page styling elements live in this file
+
+
+body {
+	background-color: black;
+	color: $text_color;
+}
+
+#microwave_container { // Our virtual screen
+	background-color: white;
+	font-size: $font_size_base;
+	line-height: $line_height_base;
+}
+
+
+// We have three different overall layout options that pages can choose from
+#three_column_layout {
+	.left_col, .right_col {
+		h1 {
+			margin: 0;
+			font-size: inherit;
+			font-weight: bold;
+			text-align: center;
+		}
+	}
+}
+
+#menu_layout {
+	font-size: 20px;
+
+	.left_col {
+		background: $primary_color;
+		// box-shadow: 8px 0 6px -6px black; // drop shadow on right edge only
+		box-shadow: 1px 0 10px 1px black; // drop shadow on right edge only
+	}
+
+	.center_col {
+		padding: 0 20px;
+		h1, h2 { // Center text
+			margin-left: auto;
+			text-align: center;
+		}
+	}
+
+	.nav {
+		line-height: 1.5em;
+
+        a {
+            color: inherit;
+            border-left: 5px solid transparent;
+            &:hover, &:focus {
+                background: $emphasis_color;
+            }
+		}
+		li.active a {
+			color: white;
+			background: $emphasis_color;
+			border-left: 5px solid white;
+		}
+
+		.btn { 
+			font-weight: 600; // btn sets it to 400 :(
+		}
+		.fa, .as-fa {
+			// Enlarge icon
+			font-size: 1.5em;
+			font-weight: normal; // Text is lower than normal weight
+			// Center icon
+			display: block;
+			text-align: center;
+			border-right: 5px solid transparent; // Compensates for left highlight border
+		}
+		.as-fa {
+			// Boost weight to match heavier icon lines
+			font-weight: 600;
+		}
+	}
+
+}
+
+@import 'btn_list';
+@import 'scrollbar';

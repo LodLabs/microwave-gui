@@ -1,57 +1,43 @@
 // TODO: Make into a nice generic module
-function time_dial(element, time, finished_callback) {
-	var total_time = time;
-	var timer = total_time; // counts down
+function time_dial(element, time) {
 	$("#time_dial").knob({
-			change : function (value) {
-				console.log("change : " + value);
-				timer = total_time - Math.round(value);
-			},
-		/*
-			release : function (value) {
-				console.log("release : " + value);
-			},
-			cancel : function () {
-				console.log("cancel : ", this);
-			},
-			format : function (value) {
-				console.log("format : " + value);
-			},
-			*/
+		'remaining' : time,
+		'min' : 0,
+		'max' : time,
 
+		// Can't seem to get a method in here and call it, so I play with this variable
+		'adjust_time' : 0,
+
+		'change' : function (value) {
+			console.log("change : " + value);
+			// TODO: Need to send this up to the server
+			this.o.remaining = this.o.max - Math.round(value);
+		},
+		'adjust_time' : function (value) {
+			console.log("adjusting");
+			this.o.remaining += value;
+			this.o.max += value;
+			this.draw();
+		},
 		'draw': function() {
 			// this.cv sets position of wheel, relative to min and max values
 			// this.i is input, used to set value of inside the wheel
-			this.cv = total_time - timer;
+			if (this.o.adjust_time) {
+				// adjust_time is a dodgy hack to let us change the time value from outside
+				this.o.remaining += this.o.adjust_time;
+				this.o.max += this.o.adjust_time;
+				this.o.adjust_time = 0;
+			}
 
-			var mins = Math.floor(timer/60);
-			var secs = timer%60;
+			var remaining = this.o.remaining;
+			this.cv = this.o.max - remaining;
+
+			var mins = Math.floor(remaining/60);
+			var secs = remaining%60;
 			$(this.i).html("-"+mins+":"+((secs+'').length == 1 ? '0'+secs : secs));
 		}
-	}).trigger('configure', {
-		"min":0,
-		"max":total_time,
 	});
-
-	// Count down the time
-	var timer_interval = setInterval(update_timer, 1000); // 1000ms
-	function update_timer() {
-		if (timer > 0) {
-			timer = timer - 1;
-			$("#time_dial").trigger('change');
-		} else {
-			clearInterval(timer_interval);
-			finished_callback();
-		}
-	}
-
-	function increment_time(knob, seconds) {
-		total_time = total_time + seconds;
-		timer = timer + seconds;
-		$(knob).trigger('configure', { "max":total_time } );
-	}
 
 	// Manually trigger the draw on load, otherwise value could be left over from page reload
 	$("#time_dial").trigger('change');
-	$("#time_dial").on("click", function() { increment_time(this, 30) });
 }

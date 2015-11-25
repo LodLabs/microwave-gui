@@ -1,97 +1,24 @@
-<!DOCTYPE html>
-<html lang="en" ng-app="mw-app">
-	<head>
-		<meta charset='utf-8'>
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<meta http-equiv="Content-Language" content="en">
-		<meta name="viewport" content="width=480">
-
-		<title>Microwave time page</title>
-
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
-		<script src="https://code.jquery.com/jquery-2.1.4.min.js" integrity="sha384-R4/ztc4ZlRqWjqIuvf6RX5yb/v90qNGx6fS48N0tRxiGkqveZETq72KgDVJCp2TC" crossorigin="anonymous"></script>
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" integrity="sha512-K1qjQ+NcF2TYO/eI3M6v8EiNYZfA95pQumfvcVrTHtwQVDG+aHRqLi/ETn2uB+1JqwYqVG3LIvdm9lj6imS/pQ==" crossorigin="anonymous"></script>
-
-		<link href="start.css" rel="stylesheet" type="text/css">
-
-		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
-	</head>
-	<body>
-		<div id="microwave_container">
-			<div ng-controller="qcook">
-				<div style="overflow-y: scroll; margin-bottom: 120px; max-height: 680px;">
-				<h1>Recipe</h1>
-				<h2>Insert Title Here...</h2>
-				<p>Each recipie consists of a sequence of steps, some may be performed by the microwave, some by the user and others, such as weighing flour, working together.</p>
-				<p>Recipies can be created by the user or downloaded from a central online portal. Online recipies will including rating facilities and a record of what recipies the user has used, for easy reference. Behind the scenes each recipe will be stored as a JSON record to allow easy communication and consistent presentation.</p>
-				<ol>
-					<li>Multiple steps</li>
-					<li>These will probably involve scrolling</li>
-					<li>We will do an automatic scroll as things go</li>
-					<li>While allowing the user to move around manually if they wish</li>
-				</ol>
-				</div>
-
-				<div id="extras" style="margin-left: 80px; margin-right: 80px;">
-					<a href="start.html" id="stop" type="button" class="btn btn-default" aria-label="Stop">
-						<span class="glyphicon glyphicon-stop" aria-hidden="true"></span>
-					</a>
-				</div>
-			</div>
+<div id="full_screen_with_footer_layout">
+	<div class="center_col">
+		<h1>Recipe</h1>
+		<h2>Insert Title Here...</h2>
+		<p>Each recipie consists of a sequence of steps, some may be performed by the microwave, some by the user and others, such as weighing flour, working together.</p>
+		<p>Recipies can be created by the user or downloaded from a central online portal. Online recipies will including rating facilities and a record of what recipies the user has used, for easy reference. Behind the scenes each recipe will be stored as a JSON record to allow easy communication and consistent presentation.</p>
+		<ol>
+			<li>Multiple steps</li>
+			<li>These will probably involve scrolling</li>
+			<li>We will do an automatic scroll as things go</li>
+			<li>While allowing the user to move around manually if they wish</li>
+		</ol>
+	</div>
+	<a href="/" id="stop" type="button" class="btn btn-default footer" aria-label="Stop">
+		<div class="btn btn-default btn-round" type="button">
+			<span class="fa fa-stop" aria-hidden="true"></span>
 		</div>
+	</a>
+</div>
 
-		<script>
-			// Based on http://stackoverflow.com/a/2880929/2438650
-			var urlParams = function () {
-				var match,
-					pl     = /\+/g,  // Regex for replacing addition symbol with a space
-					search = /([^&=]+)=?([^&]*)/g,
-					decode = function (s) { return decodeURIComponent(s.replace(pl, " ")); },
-					query  = window.location.search.substring(1);
+<script>
+$('.btn-round').each(function(index, elem) { square_element(elem); });
+</script>
 
-				var urlParams = {};
-				while (match = search.exec(query))
-				urlParams[decode(match[1])] = decode(match[2]);
-				return urlParams;
-			}();
-
-			var scripts = {
-				"boil" : {
-					"title" : "Boil liquid - 100°",
-					"description" : "Heats the liquid to boiling point and holds it there.",
-					"steps" : [
-						"Heat to 100°",
-						"Sound chime",
-						"Hold temperature between 90° and 100°",
-					]
-				},
-				"heat" : {
-					"title" : "Heat liquid - 80°",
-					"description" : "Heats the liquid and holds it there.",
-					"steps" : [
-						"Heat to 80°",
-						"Sound chime",
-						"Hold temperature between 75° and 80°",
-					]
-				},
-				"default" : {
-					"title" : "One touch cooking",
-					"description" : "One touch quick options for your common cooking needs.",
-					"steps" : [
-						"Push a button",
-						"???",
-						"EAT!",
-					],
-				},
-			
-			};
-
-            var myApp = angular.module('mw-app',[]);
-			myApp.controller('qcook', ['$scope', function($scope) {
-				$scope.details = scripts[urlParams.script] || scripts["default"];
-			}]);
-
-
-		</script>
-	</body>
-</html>

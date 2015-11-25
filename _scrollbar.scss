@@ -1,0 +1,64 @@
+// sly scrollbar - inside a tab pane
+
+.center_col .scrollbar {
+	// Scrollbar in a central pane, content is typically a btn-list
+
+	// Push the scrollbar to the padding area of the pane
+	position: absolute;
+	right: 0;
+	z-index: 20;
+
+	.handle {
+		cursor: pointer;
+
+		.mousearea {
+			height: 100%;
+			width: 22px;
+
+			position: absolute;
+			left: -10px;
+			top: 0;
+		}
+	}
+}
+
+.tab-pane .scrollbar {
+	height: 100%;
+	width:  1.2em;
+
+	border-left: thin solid;
+	border-top:  thin solid;
+
+	line-height: 0;
+
+	.handle {
+		height: 1.2em;
+		width: 1.2em;
+
+		background-color: rgba(200,200,200,0.6);
+		border: thin solid #AAA;
+		border-radius: 1.2em;
+
+		margin: 0 auto;
+	}
+
+	.bg {
+		@extend .noselect;
+
+		position: absolute;
+		top: 0;
+		left: 0.2em; // Center column horizontally
+
+		text-align: center;
+		word-wrap: break-word;
+		font-family: monospace;
+
+		width: 1px;
+		line-height: 1.3em;
+	}
+}
+
+.tab-pane .frame .btn-list {
+	// Scrolling content, need to leave some space for the scrollbar
+	margin-right: 15px;
+}
